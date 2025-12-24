@@ -25,6 +25,7 @@ function recalculerBase(){
 d('typeEco').addEventListener('change', e => {
     const container = d('variableInputs');
     container.innerHTML = '';
+    d('totalVariable').innerText = '0';
     const duree = parseInt(d('dureeEco').value) || 5;
     if(e.target.value === 'variable'){
         container.classList.remove('hidden');
@@ -41,7 +42,6 @@ d('typeEco').addEventListener('change', e => {
         }
     } else {
         container.classList.add('hidden');
-        d('totalVariable').innerText = '0';
     }
 });
 
@@ -64,30 +64,51 @@ function genererTableau(){
 
     if(methode === 'variable'){
         const inputs = d('variableInputs').querySelectorAll('input');
+        let totalSaisie = 0;
+        inputs.forEach(inp => totalSaisie += parseFloat(inp.value)||0);
         inputs.forEach((inp, idx) => {
-            const dot = (parseFloat(inp.value)||0) * base / 100; // règle de 3
+            const dot = (parseFloat(inp.value)||0) * base / totalSaisie;
             cumul += dot;
             plan.push({ annee: idx+1, dot, cumul, vnc: base-cumul });
         });
-    } else if(methode === 'lineaire'){
+    }
+    else if(methode === 'lineaire'){
         const dateDeb = new Date(d('dateService').value);
         const dateFin = new Date(d('bilanFin').value);
         const prorata1 = jours360(dateDeb,dateFin)/360;
         const dureeReelle = (prorata1===1)? duree : duree+1;
 
         for(let i=0;i<dureeReelle;i++){
-            let dot = (i===0)? base/duree*prorata1 : (i===dureeReelle-1)? base/duree*(1-prorata1) : base/duree;
+            let dot;
+            if(i===0) dot = base/duree*prorata1;
+            else if(i===dureeReelle-1) dot = base/duree*(1-prorata1);
+            else dot = base/duree;
             cumul += dot;
             plan.push({ annee: i+1, dot, cumul, vnc: base-cumul });
         }
+    }
+    else if(methode === 'degressif'){
+        if(duree <= 2){
+            alert("Dégressif non autorisé pour durée ≤ 2 ans");
+            return;
+        }
 
-    } else if(methode === 'degressif'){
         const dateDeb = new Date(d('dateService').value);
-        const mois = 12 - dateDeb.getMonth();
+        const mois = 12 - dateDeb.getMonth(); // mois complets pour année 1
+        const coeff = (duree<=4)?1.25:(duree<=6)?1.75:2.25;
+        let vnc = base;
+
         for(let i=0;i<duree;i++){
-            let dot = (i===0)? base/duree*(mois/12) : base/duree;
+            let tauxLin = 1/duree;
+            let tauxDeg = tauxLin*coeff;
+            let dot;
+            if(i===0) dot = vnc * tauxDeg * (mois/12);
+            else dot = vnc * tauxDeg;
+            // Si linéaire devient plus favorable, on bascule
+            if(dot < vnc*tauxLin) dot = vnc*tauxLin;
             cumul += dot;
             plan.push({ annee: i+1, dot, cumul, vnc: base-cumul });
+            vnc -= dot;
         }
     }
 
