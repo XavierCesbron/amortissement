@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expert-Amort PRO - V23 FINAL SOCLE</title>
+    <title>Expert-Amort PRO - V24 SOCLE DEFINITIF</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 2500px ease-in-out; }
@@ -20,7 +20,7 @@
     <div class="max-w-6xl mx-auto pb-24">
         <header class="mb-8 text-center border-b-2 border-slate-200 pb-4">
             <h1 class="text-4xl font-black text-slate-900 uppercase">Expert-Amort <span class="text-emerald-600 tracking-tighter text-5xl">PRO</span></h1>
-            <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px]">Version 23 - Moteur Dégressif Unifié</p>
+            <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px]">Version 24 - Correction Finale des Moteurs de Calcul</p>
         </header>
 
         <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-4 font-bold">
@@ -32,8 +32,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
-                        <div><label class="uppercase text-slate-400">Date Acquisition</label><input type="date" id="dateAcq" class="w-full border p-2 rounded-lg bg-white shadow-inner"></div>
-                        <div><label class="uppercase text-slate-400 font-normal">Mise en service</label><input type="date" id="dateService" class="w-full border p-2 rounded-lg bg-white shadow-inner"></div>
+                        <div><label class="uppercase text-slate-400">Acquisition</label><input type="date" id="dateAcq" class="w-full border p-2 rounded-lg bg-white"></div>
+                        <div><label class="uppercase text-slate-400 font-normal">Mise en service</label><input type="date" id="dateService" class="w-full border p-2 rounded-lg bg-white"></div>
                     </div>
                     <div class="grid grid-cols-2 gap-4 bg-blue-50 p-4 rounded-xl border border-blue-100 shadow-inner">
                         <div><label class="text-blue-500 uppercase font-black text-[9px]">Ouverture Exercice</label><input type="date" id="bilanDebut" class="w-full border p-1 rounded bg-white"></div>
@@ -62,12 +62,12 @@
 
                     <div class="p-3 bg-amber-500 text-white rounded-xl shadow-lg flex items-center justify-between">
                         <label class="uppercase font-black text-[10px]">Subvention reçue (€)</label>
-                        <input type="number" id="montantSub" value="0" class="w-32 border p-1 rounded text-right font-black text-amber-900 bg-white">
+                        <input type="number" id="montantSub" value="0" class="w-32 border p-1 rounded text-right font-black text-amber-900 bg-white shadow-inner">
                     </div>
 
                     <div class="flex items-center justify-between p-3 bg-slate-100 rounded-xl border">
                         <span class="uppercase font-black text-slate-500">Valeur Résiduelle (VR)</span>
-                        <input type="number" id="valeurResiduelle" value="0" class="w-32 border p-2 rounded-lg text-right font-black text-red-600 bg-white">
+                        <input type="number" id="valeurResiduelle" value="0" class="w-32 border p-2 rounded-lg text-right font-black text-red-600 bg-white shadow-inner">
                     </div>
                 </div>
             </div>
@@ -86,15 +86,18 @@
                 <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-100 shadow-sm">
                     <h3 class="text-[10px] font-bold text-emerald-800 mb-3 uppercase">Amortissement Économique</h3>
                     <select id="typeEco" class="w-full border p-2 rounded text-sm mb-3 font-bold"><option value="lineaire">Linéaire</option><option value="degressif">Dégressif</option></select>
-                    <div class="flex justify-between items-center"><span>Durée (ans) :</span><input type="number" id="dureeEco" value="5" class="w-16 border p-1 rounded text-center font-bold text-emerald-700 bg-white"></div>
+                    <div class="flex justify-between items-center font-bold"><span>Durée (ans) :</span><input type="number" id="dureeEco" value="5" class="w-16 border p-1 rounded text-center font-bold text-emerald-700 bg-white"></div>
                 </div>
                 <div>
                     <button onclick="toggleFiscalMan()" class="w-full flex justify-between p-4 bg-slate-100 rounded-xl border font-bold uppercase text-[10px]">Option Fiscal <span id="fiscArrow">➕</span></button>
                     <div id="fiscContent" class="collapsible-content">
                         <div class="mt-2 p-4 bg-blue-50 rounded-xl border border-blue-200 space-y-4 shadow-inner">
-                            <div class="flex items-center gap-2"><input type="checkbox" id="activeFiscal" class="w-4 h-4 cursor-pointer"><label for="activeFiscal" class="text-[10px] text-blue-900 uppercase font-bold">Activer régime dérogatoire</label></div>
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="activeFiscal" class="w-4 h-4 cursor-pointer">
+                                <label for="activeFiscal" class="text-[10px] text-blue-900 font-bold uppercase">Activer régime dérogatoire</label>
+                            </div>
                             <select id="typeFisc" class="w-full border p-2 rounded text-sm mb-3 font-bold"><option value="lineaire">Linéaire</option><option value="degressif" selected>Dégressif</option></select>
-                            <div class="flex justify-between items-center"><span>Durée Fiscale :</span><input type="number" id="dureeFisc" value="5" class="w-16 border p-1 rounded text-center font-bold text-blue-600 bg-white"></div>
+                            <div class="flex justify-between items-center font-bold"><span>Durée Fiscale :</span><input type="number" id="dureeFisc" value="5" class="w-16 border p-1 rounded text-center font-bold text-blue-700 bg-white"></div>
                         </div>
                     </div>
                 </div>
@@ -112,33 +115,36 @@
                     <label for="hasCession" class="uppercase font-black text-red-800">Activer la cession</label>
                 </div>
                 <div id="cessionInputs" class="hidden space-y-4">
-                    <div><label class="text-[10px] uppercase text-slate-400">Date de cession</label><input type="date" id="dateCession" class="w-full border-2 p-3 rounded-xl text-sm shadow-inner"></div>
-                    <div><label class="text-[10px] uppercase text-slate-400">Prix de cession (HT)</label><input type="number" id="prixCession" class="w-full border-2 p-3 rounded-xl text-xl font-black text-blue-900 bg-slate-50 shadow-inner"></div>
+                    <div><label class="text-[10px] uppercase text-slate-400">Date de cession</label><input type="date" id="dateCession" class="w-full border-2 p-2 rounded-xl text-sm shadow-inner"></div>
+                    <div><label class="text-[10px] uppercase text-slate-400">Prix de cession (HT)</label><input type="number" id="prixCession" class="w-full border-2 p-2 rounded-xl text-xl font-black text-blue-900 bg-slate-50 shadow-inner"></div>
                 </div>
             </div>
         </section>
 
         <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4 sticky bottom-4 z-50 border-t-4 border-emerald-500">
             <div><span class="text-slate-500 text-[10px] uppercase font-bold">Base Amort. Eco (VO - VR)</span><div id="resultatBase" class="text-3xl font-black text-emerald-400 tracking-tighter font-numeric">0,00 €</div></div>
-            <button onclick="genererTableau()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-16 py-5 rounded-xl font-black uppercase text-xl shadow-lg transition-transform active:scale-95">Lancer le Calcul</button>
+            <button onclick="genererTableau()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-16 py-5 rounded-xl font-black uppercase text-xl shadow-lg transition-transform active:scale-95">Calculer le Plan de Synthèse</button>
         </div>
 
         <div id="zoneTableau" class="mt-12 hidden space-y-12">
             <div id="containerCession" class="hidden">
-                <h3 class="text-2xl font-black text-red-700 mb-4 border-l-8 border-red-700 pl-4 uppercase">Plan d'amortissement immo cédée</h3>
-                <div class="overflow-x-auto rounded-xl border-2 border-slate-800 bg-white shadow-xl"><table id="tableCession" class="w-full text-left border-collapse font-bold"></table></div>
+                <h3 class="text-2xl font-black text-red-700 mb-4 border-l-8 border-red-700 pl-4 uppercase tracking-tighter">Plan d'amortissement immo cédée</h3>
+                <div class="overflow-x-auto rounded-xl border-2 border-slate-800 bg-white shadow-xl"><table id="tableCession" class="w-full text-left border-collapse font-numeric"></table></div>
             </div>
+            
             <div>
-                <h3 class="text-2xl font-black text-slate-800 mb-4 border-l-8 border-emerald-500 pl-4 uppercase">Plan d'amortissement théorique</h3>
-                <div class="overflow-x-auto rounded-xl border-2 border-slate-800 bg-white shadow-xl"><table id="tableNormal" class="w-full text-left border-collapse font-bold"></table></div>
+                <h3 class="text-2xl font-black text-slate-800 mb-4 border-l-8 border-emerald-500 pl-4 uppercase tracking-tighter">Plan d'amortissement théorique</h3>
+                <div class="overflow-x-auto rounded-xl border-2 border-slate-800 bg-white shadow-xl"><table id="tableNormal" class="w-full text-left border-collapse font-numeric"></table></div>
             </div>
+
             <div id="containerSub" class="hidden">
-                <h3 class="text-2xl font-black text-amber-600 mb-4 border-l-8 border-amber-600 pl-4 uppercase font-bold">Plan d'étalement de la subvention</h3>
-                <div class="overflow-x-auto rounded-xl border-2 border-slate-800 bg-white shadow-xl"><table id="tableSub" class="w-full text-left border-collapse font-bold"></table></div>
+                <h3 class="text-2xl font-black text-amber-600 mb-4 border-l-8 border-amber-600 pl-4 uppercase font-bold tracking-tighter">Plan d'étalement de la subvention</h3>
+                <div class="overflow-x-auto rounded-xl border-2 border-slate-800 bg-white shadow-xl"><table id="tableSub" class="w-full text-left border-collapse font-numeric"></table></div>
             </div>
-            <div class="financial-section"><h3 class="text-lg font-black mb-4 uppercase text-blue-800 border-b-2 border-blue-100 pb-2">Extrait Bilan Actif (N / N-1)</h3><table id="bilanActif" class="w-full text-[10px] font-bold"></table></div>
-            <div class="financial-section"><h3 class="text-lg font-black mb-4 uppercase text-indigo-800 border-b-2 border-indigo-100 pb-2">Extrait Bilan Passif (N / N-1)</h3><table id="bilanPassif" class="w-full text-[10px] font-bold"></table></div>
-            <div class="financial-section"><h3 class="text-lg font-black mb-4 uppercase text-emerald-800 border-b-2 border-emerald-100 pb-2">Extrait Compte de Résultat (N / N-1)</h3><table id="compteResultat" class="w-full text-[10px] font-bold"></table></div>
+
+            <div class="financial-section"><h3 class="text-lg font-black mb-4 uppercase text-blue-800 border-b-2 border-blue-100 pb-2 tracking-tighter">Extrait Bilan Actif (N / N-1)</h3><div class="overflow-x-auto"><table id="bilanActif" class="w-full text-[10px] font-bold"></table></div></div>
+            <div class="financial-section"><h3 class="text-lg font-black mb-4 uppercase text-indigo-800 border-b-2 border-indigo-100 pb-2 tracking-tighter">Extrait Bilan Passif (N / N-1)</h3><div class="overflow-x-auto"><table id="bilanPassif" class="w-full text-[10px] font-bold"></table></div></div>
+            <div class="financial-section"><h3 class="text-lg font-black mb-4 uppercase text-emerald-800 border-b-2 border-emerald-100 pb-2 tracking-tighter">Extrait Compte de Résultat (N / N-1)</h3><div class="overflow-x-auto"><table id="compteResultat" class="w-full text-[10px] font-bold"></table></div></div>
         </div>
     </div>
 
@@ -168,6 +174,7 @@
         document.getElementById('hasCession').addEventListener('change', (e) => {
             document.getElementById('cessionInputs').classList.toggle('hidden', !e.target.checked);
         });
+
         document.getElementById('valeurResiduelle').addEventListener('input', (e) => {
             if(parseFloat(e.target.value) > 0) {
                 document.getElementById('fiscContent').classList.add('active');
@@ -181,14 +188,16 @@
         function calculerBase() {
             const mtHT = parseFloat(getV('montantHT')) || 0;
             const vr = parseFloat(getV('valeurResiduelle')) || 0;
-            const base = (document.getElementById('isVehicule').checked ? mtHT * 1.2 : mtHT) - vr;
+            const isVehicule = document.getElementById('isVehicule').checked;
+            const base = (isVehicule ? mtHT * 1.2 : mtHT) - vr;
             document.getElementById('resultatBase').innerText = formatC(base);
             return base;
         }
 
         function getJ360(d1, d2) {
-            let day1 = Math.min(30, d1.getDate()), month1 = d1.getMonth(), year1 = d1.getFullYear();
-            let day2 = Math.min(30, d2.getDate()), month2 = d2.getMonth(), year2 = d2.getFullYear();
+            let start = new Date(d1), end = new Date(d2);
+            let day1 = Math.min(30, start.getDate()), month1 = start.getMonth(), year1 = start.getFullYear();
+            let day2 = Math.min(30, end.getDate()), month2 = end.getMonth(), year2 = end.getFullYear();
             return (year2 - year1) * 360 + (month2 - month1) * 30 + (day2 - day1) + 1;
         }
 
@@ -210,43 +219,46 @@
             const runCalcul = (isCsReal) => {
                 let plan = [];
                 let cE = 0, cF = 0, cD = 0, cS = 0;
-                const coeffF = (durF <= 4) ? 1.25 : (durF <= 6 ? 1.75 : 2.25);
-                const coeffE = (durE <= 4) ? 1.25 : (durE <= 6 ? 1.75 : 2.25);
+                const coF = (durF <= 4) ? 1.25 : (durF <= 6 ? 1.75 : 2.25);
+                const coE = (durE <= 4) ? 1.25 : (durE <= 6 ? 1.75 : 2.25);
 
                 for (let i = 0; i < 50; i++) {
-                    let dbtE = new Date(bDb); dbtE.setFullYear(dbtE.getFullYear() + i);
-                    let finE = new Date(bFi); finE.setFullYear(finE.getFullYear() + i);
+                    let dbtEx = new Date(bDb); dbtEx.setFullYear(dbtEx.getFullYear() + i);
+                    let finEx = new Date(bFi); finEx.setFullYear(finEx.getFullYear() + i);
                     let dotE = 0, dotF = 0, repS = 0;
 
-                    const isOutYear = (isCsReal && dCs < finE);
-                    if(isOutYear) finE = dCs;
+                    const isOutYear = (isCsReal && dCs < finEx);
+                    if(isOutYear) finEx = dCs;
 
-                    let deb = (i === 0) ? (dSv > dbtE ? dSv : dbtE) : dbtE;
-                    let isFull = (deb.getTime() === dbtE.getTime() && finE.getTime() === (new Date(finE.getFullYear(), finE.getMonth(), finE.getDate())).getTime());
-                    let ratio = 1;
-                    if(!isFull) {
-                        let nbJ = (bT === "360") ? getJ360(deb, finE) : Math.floor((finE - deb) / 86400000) + 1;
-                        ratio = nbJ / (bT === "360" ? 360 : 365);
-                    }
-
+                    let deb = (i === 0) ? (dSv > dbtEx ? dSv : dbtEx) : dbtEx;
+                    let isFull = (deb.getTime() <= dbtEx.getTime() && finEx.getTime() >= (new Date(finEx.getFullYear(), finEx.getMonth(), finEx.getDate())).getTime());
+                    
                     // --- MOTEUR ECONOMIQUE ---
                     if (cE < (baseE - 0.01)) {
                         if (getV('typeEco') === "degressif") {
-                            let tD = (1/durE) * coeffE;
+                            let tD = (1/durE) * coE;
                             if (i === 0) dotE = baseE * tD * ((13 - (dSv.getMonth() + 1)) / 12);
-                            else if (isOutYear) dotE = ((baseE - cE) * tD / 12) * dCs.getMonth();
+                            else if (isOutYear) dotE = ((baseE - cE) * tD / 12) * dCs.getMonth(); // Mois pleins jusqu'au mois de cession
                             else dotE = Math.max((baseE - cE) * tD, (baseE - cE) / (durE - i));
-                        } else dotE = Math.min((baseE / durE) * ratio, baseE - cE);
+                        } else {
+                            let nbJ = (bT === "360") ? getJ360(deb, finEx) : Math.floor((finEx - deb) / 86400000) + 1;
+                            let rat = nbJ / (bT === "360" ? 360 : 365);
+                            dotE = Math.min((baseE / durE) * rat, baseE - cE);
+                        }
                     }
 
                     // --- MOTEUR FISCAL ---
                     if (actF && cF < (baseF - 0.01)) {
                         if (getV('typeFisc') === "degressif") {
-                            let tD = (1/durF) * coeffF;
+                            let tD = (1/durF) * coF;
                             if (i === 0) dotF = baseF * tD * ((13 - (dAc.getMonth() + 1)) / 12);
-                            else if (isOutYear) dotF = ((baseF - cF) * tD / 12) * dCs.getMonth();
+                            else if (isOutYear) dotF = ((baseF - cF) * tD / 12) * dCs.getMonth(); // Mois pleins
                             else dotF = Math.max((baseF - cF) * tD, (baseF - cF) / (durF - i));
-                        } else dotF = Math.min((baseF / durF) * ratio, baseF - cF);
+                        } else {
+                            let nbJ = (bT === "360") ? getJ360(deb, finEx) : Math.floor((finEx - deb) / 86400000) + 1;
+                            let rat = nbJ / (bT === "360" ? 360 : 365);
+                            dotF = Math.min((baseF / durF) * rat, baseF - cF);
+                        }
                     } else if (!actF) dotF = dotE;
 
                     dotE = Math.min(dotE, baseE - cE);
@@ -259,7 +271,7 @@
                     }
 
                     if(dotE <= 0 && dotF <= 0 && i > 0 && (subTot > 0 ? repS <= 0 : true)) break;
-                    plan.push({ annee: finE.getFullYear(), dotE, cE: (cE += dotE), dotF, cF: (cF += dotF), der, cD: (cD += der), repS, cS: (cS += repS), isOut: isOutYear });
+                    plan.push({ annee: finEx.getFullYear(), dotE, cE: (cE += dotE), dotF, cF: (cF += dotF), der, cD: (cD += der), repS, cS: (cS += repS), isOut: isOutYear });
                     if(isOutYear) break;
                 }
                 return plan;
@@ -267,12 +279,12 @@
 
             const pNormal = runCalcul(false);
             const pCess = hasCs ? runCalcul(true) : null;
-            const t = pCess || pNormal;
+            const target = pCess || pNormal;
 
             document.getElementById('zoneTableau').classList.remove('hidden');
             const rT = (data, id) => {
                 let h = `<thead class="bg-slate-800 text-white uppercase text-[8px]"><tr><th>Année</th><th>Dot. Eco</th><th>Dot. Fisc</th><th>Dot (D)</th><th>Rep (R)</th><th>VNC</th></tr></thead><tbody>`;
-                data.forEach(r => h += `<tr class="border-b ${r.isOut ? 'bg-amber-50' : ''}"><td>${r.annee}</td><td>${formatC(r.dotE)}</td><td>${formatC(r.dotF)}</td><td>${r.der > 0.01 ? formatC(r.der) : '-'}</td><td>${r.der < -0.01 ? formatC(Math.abs(r.der)) : '-'}</td><td class="bg-slate-50 font-black">${formatC(bBrut - r.cE)}</td></tr>`);
+                data.forEach(r => h += `<tr class="border-b ${r.isOut ? 'bg-amber-50' : ''}"><td>${r.annee}</td><td>${formatC(r.dotE)}</td><td>${formatC(r.dotF)}</td><td class="text-blue-700">${r.der > 0.01 ? formatC(r.der) : '-'}</td><td class="text-orange-700">${r.der < -0.01 ? formatC(Math.abs(r.der)) : '-'}</td><td class="bg-slate-50 font-black">${formatC(bBrut - r.cE)}</td></tr>`);
                 document.getElementById(id).innerHTML = h + `</tbody>`;
             };
             rT(pNormal, 'tableNormal');
@@ -282,30 +294,30 @@
             if(subTot > 0) {
                 document.getElementById('containerSub').classList.remove('hidden');
                 let hs = `<thead class="bg-amber-700 text-white uppercase text-[8px]"><tr><th>Année</th><th>Reprise</th><th>Cumul</th><th>Solde</th></tr></thead><tbody>`;
-                pNormal.forEach(r => hs += `<tr class="border-b"><td>${r.annee}</td><td>${formatC(r.repS)}</td><td>${formatC(r.cS)}</td><td>${formatC(subTot-r.cS)}</td></tr>`);
+                pNormal.forEach(r => hs += `<tr class="border-b"><td>${r.annee}</td><td>${formatC(r.repS)}</td><td>${formatC(r.cS)}</td><td class="font-black">${formatC(subTot-r.cS)}</td></tr>`);
                 document.getElementById('tableSub').innerHTML = hs + `</tbody>`;
-            }
+            } else document.getElementById('containerSub').classList.add('hidden');
 
-            // Reports Financiers
+            // Reports N / N-1
             let ha = `<thead class="bg-blue-900 text-white uppercase text-center"><tr><th>Exercice</th><th>Brut</th><th>Amort. Cumul</th><th>Net N</th><th class="bg-blue-600">Net N-1</th></tr></thead><tbody>`;
-            t.forEach((r, i) => {
-                const n1 = (i === 0) ? 0 : (t[i-1].isOut ? 0 : bBrut - t[i-1].cE);
+            target.forEach((r, i) => {
+                const n1 = (i === 0) ? 0 : (target[i-1].isOut ? 0 : bBrut - target[i-1].cE);
                 if(r.isOut) ha += `<tr class="bg-blue-50"><td>${r.annee} (AV.)</td><td>${formatC(bBrut)}</td><td>${formatC(r.cE)}</td><td>${formatC(bBrut-r.cE)}</td><td>-</td></tr>`;
-                ha += `<tr class="border-b"><td>${r.annee}${r.isOut ? ' (POST.)' : ''}</td><td>${formatC(r.isOut?0:bBrut)}</td><td>${formatC(r.isOut?0:r.cE)}</td><td class="font-black">${formatC(r.isOut?0:bBrut-r.cE)}</td><td>${formatC(n1)}</td></tr>`;
+                ha += `<tr class="border-b"><td>${r.annee}${r.isOut ? ' (POST.)' : ''}</td><td>${formatC(r.isOut ? 0 : bBrut)}</td><td>${formatC(r.isOut ? 0 : r.cE)}</td><td class="font-black text-blue-900">${formatC(r.isOut ? 0 : bBrut-r.cE)}</td><td class="text-blue-400">${formatC(n1)}</td></tr>`;
             });
             document.getElementById('bilanActif').innerHTML = ha + `</tbody>`;
 
             let hp = `<thead class="bg-indigo-900 text-white uppercase text-center"><tr><th>Exercice</th><th class="bg-indigo-700">Déro N</th><th class="bg-indigo-500">Déro N-1</th><th class="bg-blue-700">Sub N</th><th class="bg-blue-500">Sub N-1</th></tr></thead><tbody>`;
-            t.forEach((r, i) => {
-                const d1 = (i === 0) ? 0 : t[i-1].cD;
-                const s1 = (i === 0) ? subTot : subTot - t[i-1].cS;
+            target.forEach((r, i) => {
+                const d1 = (i === 0) ? 0 : (target[i-1].isOut ? 0 : target[i-1].cD);
+                const s1 = (i === 0) ? subTot : (target[i-1].isOut ? 0 : subTot - target[i-1].cS);
                 if(r.isOut) hp += `<tr class="bg-indigo-50"><td>${r.annee} (AV.)</td><td>${formatC(r.cD)}</td><td>-</td><td>${formatC(subTot-r.cS)}</td><td>-</td></tr>`;
-                hp += `<tr class="border-b"><td>${r.annee}${r.isOut?' (POST.)':''}</td><td>${formatC(r.isOut?0:r.cD)}</td><td>${formatC(d1)}</td><td>${formatC(r.isOut?0:subTot-r.cS)}</td><td>${formatC(s1)}</td></tr>`;
+                hp += `<tr class="border-b"><td>${r.annee}${r.isOut?' (POST.)':''}</td><td class="text-indigo-900">${formatC(r.isOut?0:r.cD)}</td><td class="text-indigo-400">${formatC(d1)}</td><td class="text-blue-900">${formatC(r.isOut?0:subTot-r.cS)}</td><td class="text-blue-400">${formatC(s1)}</td></tr>`;
             });
             document.getElementById('bilanPassif').innerHTML = hp + `</tbody>`;
 
             let hr = `<thead class="bg-emerald-900 text-white uppercase text-[8px] text-center"><tr><th rowspan="2">Année</th><th colspan="2" class="bg-emerald-800">Charges Eco</th><th colspan="2" class="bg-emerald-700">Dot Déro</th><th colspan="2" class="bg-emerald-600">Rep Déro</th><th colspan="2" class="bg-emerald-500">Rep Sub</th></tr><tr><th>N</th><th>N-1</th><th>N</th><th>N-1</th><th>N</th><th>N-1</th><th>N</th><th>N-1</th></tr></thead><tbody>`;
-            t.forEach((r, i) => {
+            target.forEach((r, i) => {
                 const n1 = (i === 0) ? { dotE:0, der:0, repS:0 } : target[i-1];
                 const dN = r.der > 0 ? r.der : 0; const d1 = n1.der > 0 ? n1.der : 0;
                 const rN = r.der < 0 ? Math.abs(r.der) : 0; const r1 = n1.der < 0 ? Math.abs(n1.der) : 0;
