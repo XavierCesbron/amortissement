@@ -1,330 +1,191 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expert-Amort PRO - V24 SOCLE DEFINITIF</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 2500px ease-in-out; }
-        .collapsible-content.active { max-height: 3000px; }
-        .th-main { border-right: 2px solid white !important; border-bottom: 2px solid white !important; }
-        .th-sub { border-right: 1px solid white !important; }
-        th, td { border: 1px solid #e2e8f0; padding: 10px !important; }
-        .font-numeric { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; font-weight: 700; }
-        .financial-section { background-color: #f8fafc; border: 2px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem; margin-top: 2rem; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expert-Amort PRO – Refonte V1</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-50 p-6 font-sans text-slate-800 text-xs">
+<body class="bg-slate-50 p-6 text-xs text-slate-800">
 
-    <div class="max-w-6xl mx-auto pb-24">
-        <header class="mb-8 text-center border-b-2 border-slate-200 pb-4">
-            <h1 class="text-4xl font-black text-slate-900 uppercase">Expert-Amort <span class="text-emerald-600 tracking-tighter text-5xl">PRO</span></h1>
-            <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px]">Version 24 - Correction Finale des Moteurs de Calcul</p>
-        </header>
+<div class="max-w-6xl mx-auto space-y-6">
+  <header class="text-center border-b pb-4">
+    <h1 class="text-4xl font-black uppercase">Expert-Amort <span class="text-emerald-600">PRO</span></h1>
+    <p class="text-slate-500 font-bold tracking-widest">REFONTE – SOCLE MOTEUR / BASE 360</p>
+  </header>
 
-        <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-4 font-bold">
-            <div class="flex items-center gap-3 mb-6 border-b pb-4 text-blue-700">
-                <span class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold text-sm">1</span>
-                <h2 class="text-xl font-bold uppercase tracking-tight">INVESTISSEMENT</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="space-y-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div><label class="uppercase text-slate-400">Acquisition</label><input type="date" id="dateAcq" class="w-full border p-2 rounded-lg bg-white"></div>
-                        <div><label class="uppercase text-slate-400 font-normal">Mise en service</label><input type="date" id="dateService" class="w-full border p-2 rounded-lg bg-white"></div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 bg-blue-50 p-4 rounded-xl border border-blue-100 shadow-inner">
-                        <div><label class="text-blue-500 uppercase font-black text-[9px]">Ouverture Exercice</label><input type="date" id="bilanDebut" class="w-full border p-1 rounded bg-white"></div>
-                        <div><label class="text-blue-500 uppercase font-black text-[9px]">Clôture Exercice</label><input type="date" id="bilanFin" class="w-full border p-1 rounded bg-white"></div>
-                    </div>
-                </div>
-                <div class="space-y-4">
-                    <div><label class="uppercase text-slate-400">Base Brute (HT)</label><input type="number" id="montantHT" placeholder="0.00" class="w-full border-2 p-3 rounded-xl text-2xl font-black text-blue-800 border-blue-50"></div>
-                    
-                    <div class="p-3 bg-blue-600 text-white rounded-xl shadow-lg space-y-3">
-                        <div class="flex items-center gap-3 border-b border-blue-500 pb-2">
-                            <input type="checkbox" id="isVehicule" class="w-5 h-5 cursor-pointer">
-                            <label for="isVehicule" class="uppercase font-black text-[10px]">Véhicule de Tourisme (+20% TVA)</label>
-                        </div>
-                        <div id="co2Box" class="hidden space-y-2">
-                            <div class="flex items-center justify-between gap-2">
-                                <label class="text-[9px]">CO2 (g/km) :</label>
-                                <input type="number" id="co2Grammes" class="w-20 p-1 text-black rounded text-xs">
-                            </div>
-                            <div class="flex items-center justify-between gap-2">
-                                <label class="text-[9px]">LIMITE FISCALE (€) :</label>
-                                <input type="number" id="limiteLibre" class="w-24 p-1 text-black rounded text-xs font-bold" value="18300">
-                            </div>
-                        </div>
-                    </div>
+  <!-- ONGLET 1 : INVESTISSEMENT -->
+  <section class="bg-white p-6 rounded-xl border shadow">
+    <h2 class="font-black text-lg text-blue-700 mb-4">1 – INVESTISSEMENT</h2>
 
-                    <div class="p-3 bg-amber-500 text-white rounded-xl shadow-lg flex items-center justify-between">
-                        <label class="uppercase font-black text-[10px]">Subvention reçue (€)</label>
-                        <input type="number" id="montantSub" value="0" class="w-32 border p-1 rounded text-right font-black text-amber-900 bg-white shadow-inner">
-                    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="space-y-3">
+        <label>Base brute HT</label>
+        <input id="baseHT" type="number" class="w-full border p-2 rounded" />
 
-                    <div class="flex items-center justify-between p-3 bg-slate-100 rounded-xl border">
-                        <span class="uppercase font-black text-slate-500">Valeur Résiduelle (VR)</span>
-                        <input type="number" id="valeurResiduelle" value="0" class="w-32 border p-2 rounded-lg text-right font-black text-red-600 bg-white shadow-inner">
-                    </div>
-                </div>
-            </div>
-        </section>
+        <label>Date d'acquisition</label>
+        <input id="dateAcq" type="date" class="w-full border p-2 rounded" />
 
-        <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-4 font-bold">
-            <div class="flex items-center gap-3 mb-6 border-b pb-4 text-emerald-700">
-                <span class="bg-emerald-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold text-sm">2</span>
-                <h2 class="text-xl font-bold uppercase tracking-tight">METHODES D'AMORTISSEMENT</h2>
-            </div>
-            <div class="mb-4 flex gap-4 items-center justify-center bg-slate-800 text-white p-3 rounded-xl text-xs uppercase font-bold">
-                <span>Base de temps :</span>
-                <select id="baseJours" class="bg-slate-700 p-2 rounded-lg border-none"><option value="360">360 jours</option><option value="365">365 jours</option></select>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-100 shadow-sm">
-                    <h3 class="text-[10px] font-bold text-emerald-800 mb-3 uppercase">Amortissement Économique</h3>
-                    <select id="typeEco" class="w-full border p-2 rounded text-sm mb-3 font-bold"><option value="lineaire">Linéaire</option><option value="degressif">Dégressif</option></select>
-                    <div class="flex justify-between items-center font-bold"><span>Durée (ans) :</span><input type="number" id="dureeEco" value="5" class="w-16 border p-1 rounded text-center font-bold text-emerald-700 bg-white"></div>
-                </div>
-                <div>
-                    <button onclick="toggleFiscalMan()" class="w-full flex justify-between p-4 bg-slate-100 rounded-xl border font-bold uppercase text-[10px]">Option Fiscal <span id="fiscArrow">➕</span></button>
-                    <div id="fiscContent" class="collapsible-content">
-                        <div class="mt-2 p-4 bg-blue-50 rounded-xl border border-blue-200 space-y-4 shadow-inner">
-                            <div class="flex items-center gap-2">
-                                <input type="checkbox" id="activeFiscal" class="w-4 h-4 cursor-pointer">
-                                <label for="activeFiscal" class="text-[10px] text-blue-900 font-bold uppercase">Activer régime dérogatoire</label>
-                            </div>
-                            <select id="typeFisc" class="w-full border p-2 rounded text-sm mb-3 font-bold"><option value="lineaire">Linéaire</option><option value="degressif" selected>Dégressif</option></select>
-                            <div class="flex justify-between items-center font-bold"><span>Durée Fiscale :</span><input type="number" id="dureeFisc" value="5" class="w-16 border p-1 rounded text-center font-bold text-blue-700 bg-white"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <label>Date de mise en service</label>
+        <input id="dateServ" type="date" class="w-full border p-2 rounded" />
 
-        <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-4 font-bold">
-            <div class="flex items-center gap-3 mb-6 border-b pb-4 text-red-700">
-                <span class="bg-red-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold text-sm">3</span>
-                <h2 class="text-xl font-bold uppercase tracking-tight">CESSION</h2>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="flex items-center gap-3 p-4 bg-red-50 rounded-xl border border-red-100">
-                    <input type="checkbox" id="hasCession" class="w-5 h-5 cursor-pointer">
-                    <label for="hasCession" class="uppercase font-black text-red-800">Activer la cession</label>
-                </div>
-                <div id="cessionInputs" class="hidden space-y-4">
-                    <div><label class="text-[10px] uppercase text-slate-400">Date de cession</label><input type="date" id="dateCession" class="w-full border-2 p-2 rounded-xl text-sm shadow-inner"></div>
-                    <div><label class="text-[10px] uppercase text-slate-400">Prix de cession (HT)</label><input type="number" id="prixCession" class="w-full border-2 p-2 rounded-xl text-xl font-black text-blue-900 bg-slate-50 shadow-inner"></div>
-                </div>
-            </div>
-        </section>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label>Ouverture exercice</label>
+            <input id="dateOpen" type="date" class="w-full border p-2 rounded" />
+          </div>
+          <div>
+            <label>Clôture exercice</label>
+            <input id="dateClose" type="date" class="w-full border p-2 rounded" />
+          </div>
+        </div>
+      </div>
 
-        <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4 sticky bottom-4 z-50 border-t-4 border-emerald-500">
-            <div><span class="text-slate-500 text-[10px] uppercase font-bold">Base Amort. Eco (VO - VR)</span><div id="resultatBase" class="text-3xl font-black text-emerald-400 tracking-tighter font-numeric">0,00 €</div></div>
-            <button onclick="genererTableau()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-16 py-5 rounded-xl font-black uppercase text-xl shadow-lg transition-transform active:scale-95">Calculer le Plan de Synthèse</button>
+      <div class="space-y-3">
+        <div class="bg-blue-600 text-white p-3 rounded">
+          <label class="flex items-center gap-2">
+            <input id="isVehicule" type="checkbox" /> Véhicule de tourisme (+20 %)
+          </label>
+          <div id="vehiculeBox" class="hidden mt-2 space-y-2">
+            <label>CO₂ (g/km)</label>
+            <input id="co2" type="number" class="w-full text-black p-1 rounded" />
+            <label>Plafond fiscal</label>
+            <input id="plafondVehicule" type="number" class="w-full text-black p-1 rounded" />
+          </div>
         </div>
 
-        <div id="zoneTableau" class="mt-12 hidden space-y-12">
-            <div id="containerCession" class="hidden">
-                <h3 class="text-2xl font-black text-red-700 mb-4 border-l-8 border-red-700 pl-4 uppercase tracking-tighter">Plan d'amortissement immo cédée</h3>
-                <div class="overflow-x-auto rounded-xl border-2 border-slate-800 bg-white shadow-xl"><table id="tableCession" class="w-full text-left border-collapse font-numeric"></table></div>
-            </div>
-            
-            <div>
-                <h3 class="text-2xl font-black text-slate-800 mb-4 border-l-8 border-emerald-500 pl-4 uppercase tracking-tighter">Plan d'amortissement théorique</h3>
-                <div class="overflow-x-auto rounded-xl border-2 border-slate-800 bg-white shadow-xl"><table id="tableNormal" class="w-full text-left border-collapse font-numeric"></table></div>
-            </div>
-
-            <div id="containerSub" class="hidden">
-                <h3 class="text-2xl font-black text-amber-600 mb-4 border-l-8 border-amber-600 pl-4 uppercase font-bold tracking-tighter">Plan d'étalement de la subvention</h3>
-                <div class="overflow-x-auto rounded-xl border-2 border-slate-800 bg-white shadow-xl"><table id="tableSub" class="w-full text-left border-collapse font-numeric"></table></div>
-            </div>
-
-            <div class="financial-section"><h3 class="text-lg font-black mb-4 uppercase text-blue-800 border-b-2 border-blue-100 pb-2 tracking-tighter">Extrait Bilan Actif (N / N-1)</h3><div class="overflow-x-auto"><table id="bilanActif" class="w-full text-[10px] font-bold"></table></div></div>
-            <div class="financial-section"><h3 class="text-lg font-black mb-4 uppercase text-indigo-800 border-b-2 border-indigo-100 pb-2 tracking-tighter">Extrait Bilan Passif (N / N-1)</h3><div class="overflow-x-auto"><table id="bilanPassif" class="w-full text-[10px] font-bold"></table></div></div>
-            <div class="financial-section"><h3 class="text-lg font-black mb-4 uppercase text-emerald-800 border-b-2 border-emerald-100 pb-2 tracking-tighter">Extrait Compte de Résultat (N / N-1)</h3><div class="overflow-x-auto"><table id="compteResultat" class="w-full text-[10px] font-bold"></table></div></div>
+        <div class="border p-3 rounded bg-slate-50">
+          <label>Valeur résiduelle</label>
+          <input id="valeurResiduelle" type="number" value="0" class="w-full border p-2 rounded" />
         </div>
+
+        <div class="border p-3 rounded bg-emerald-50">
+          <label>Subvention (%)</label>
+          <input id="subvPct" type="number" class="w-full border p-2 rounded" />
+          <label>Subvention (montant)</label>
+          <input id="subvMt" type="number" class="w-full border p-2 rounded" />
+        </div>
+      </div>
     </div>
 
-    <script>
-        const getV = (id) => document.getElementById(id).value;
-        const formatC = (v) => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(v);
+    <div class="mt-4">
+      <span class="uppercase text-slate-500">Base amortissable</span>
+      <div id="baseAmort" class="text-2xl font-black text-emerald-600">0 €</div>
+    </div>
+  </section>
 
-        document.getElementById('dateAcq').addEventListener('input', (e) => {
-            const d = new Date(e.target.value);
-            document.getElementById('dateService').value = e.target.value;
-            if(!isNaN(d.getTime())) {
-                document.getElementById('bilanDebut').value = `${d.getFullYear()}-01-01`;
-                document.getElementById('bilanFin').value = `${d.getFullYear()}-12-31`;
-            }
-            calculerBase();
-        });
+  <!-- ONGLET 2 : METHODES -->
+  <section class="bg-white p-6 rounded-xl border shadow">
+    <h2 class="font-black text-lg text-emerald-700 mb-4">2 – MÉTHODES</h2>
 
-        document.getElementById('bilanDebut').addEventListener('input', (e) => {
-            const d = new Date(e.target.value);
-            if(!isNaN(d.getTime())) {
-                const f = new Date(d); f.setFullYear(f.getFullYear()+1); f.setDate(f.getDate()-1);
-                document.getElementById('bilanFin').value = f.toISOString().split('T')[0];
-            }
-        });
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="border p-4 rounded">
+        <h3 class="font-bold mb-2">Amortissement comptable</h3>
+        <select id="methCompta" class="w-full border p-2 rounded">
+          <option value="lineaire">Linéaire</option>
+          <option value="degressif">Dégressif</option>
+        </select>
+        <label>Durée (ans)</label>
+        <input id="dureeCompta" type="number" value="5" class="w-full border p-2 rounded" />
+      </div>
 
-        document.getElementById('isVehicule').addEventListener('change', () => calculerBase());
-        document.getElementById('hasCession').addEventListener('change', (e) => {
-            document.getElementById('cessionInputs').classList.toggle('hidden', !e.target.checked);
-        });
+      <div class="border p-4 rounded">
+        <h3 class="font-bold mb-2">Amortissement fiscal</h3>
+        <label class="flex items-center gap-2">
+          <input id="optFiscal" type="checkbox" /> Activer option fiscale
+        </label>
+        <select id="methFiscal" class="w-full border p-2 rounded">
+          <option value="lineaire">Linéaire</option>
+          <option value="degressif">Dégressif</option>
+        </select>
+        <label>Durée fiscale</label>
+        <input id="dureeFiscal" type="number" value="5" class="w-full border p-2 rounded" />
+      </div>
+    </div>
+  </section>
 
-        document.getElementById('valeurResiduelle').addEventListener('input', (e) => {
-            if(parseFloat(e.target.value) > 0) {
-                document.getElementById('fiscContent').classList.add('active');
-                document.getElementById('activeFiscal').checked = true;
-            }
-            calculerBase();
-        });
+  <!-- ONGLET 3 : CESSION -->
+  <section class="bg-white p-6 rounded-xl border shadow">
+    <h2 class="font-black text-lg text-red-700 mb-4">3 – CESSION</h2>
+    <label class="flex items-center gap-2 mb-2">
+      <input id="hasCession" type="checkbox" /> Activer la cession
+    </label>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input id="dateCession" type="date" class="border p-2 rounded" />
+      <input id="prixCession" type="number" class="border p-2 rounded" placeholder="Prix de cession" />
+    </div>
+  </section>
 
-        function toggleFiscalMan() { document.getElementById('fiscContent').classList.toggle('active'); }
+  <button onclick="calculer()" class="w-full bg-emerald-600 text-white p-4 rounded-xl font-black text-lg">CALCULER</button>
 
-        function calculerBase() {
-            const mtHT = parseFloat(getV('montantHT')) || 0;
-            const vr = parseFloat(getV('valeurResiduelle')) || 0;
-            const isVehicule = document.getElementById('isVehicule').checked;
-            const base = (isVehicule ? mtHT * 1.2 : mtHT) - vr;
-            document.getElementById('resultatBase').innerText = formatC(base);
-            return base;
-        }
+  <section id="resultats" class="hidden bg-white p-6 rounded-xl border shadow">
+    <h2 class="font-black mb-4">Plan d'amortissement</h2>
+    <table id="tableAmort" class="w-full text-xs"></table>
+  </section>
+</div>
 
-        function getJ360(d1, d2) {
-            let start = new Date(d1), end = new Date(d2);
-            let day1 = Math.min(30, start.getDate()), month1 = start.getMonth(), year1 = start.getFullYear();
-            let day2 = Math.min(30, end.getDate()), month2 = end.getMonth(), year2 = end.getFullYear();
-            return (year2 - year1) * 360 + (month2 - month1) * 30 + (day2 - day1) + 1;
-        }
+<script>
+// ================= OUTILS =================
+const € = v => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(v||0);
+const d = id => document.getElementById(id);
 
-        function genererTableau() {
-            const isTVA = document.getElementById('isVehicule').checked;
-            const mtHT = parseFloat(getV('montantHT')) || 0;
-            const bBrut = isTVA ? mtHT * 1.2 : mtHT;
-            const vr = parseFloat(getV('valeurResiduelle')) || 0;
-            const baseE = bBrut - vr;
-            const baseF = bBrut;
-            const subTot = parseFloat(getV('montantSub')) || 0;
-            const actF = document.getElementById('activeFiscal').checked;
+// Base 360
+function jours360(d1,d2){
+  const y1=d1.getFullYear(),y2=d2.getFullYear();
+  const m1=d1.getMonth()+1,m2=d2.getMonth()+1;
+  const j1=Math.min(d1.getDate(),30);
+  const j2=Math.min(d2.getDate(),30);
+  return (y2-y1)*360+(m2-m1)*30+(j2-j1)+1;
+}
 
-            const dSv = new Date(getV('dateService')), dAc = new Date(getV('dateAcq')), dCs = new Date(getV('dateCession'));
-            const bDb = new Date(getV('bilanDebut')), bFi = new Date(getV('bilanFin')), bT = getV('baseJours');
-            const durE = parseInt(getV('dureeEco')), durF = parseInt(getV('dureeFisc'));
-            const hasCs = document.getElementById('hasCession').checked && !isNaN(dCs.getTime());
+function prorata(d1,d2){ return jours360(d1,d2)/360; }
 
-            const runCalcul = (isCsReal) => {
-                let plan = [];
-                let cE = 0, cF = 0, cD = 0, cS = 0;
-                const coF = (durF <= 4) ? 1.25 : (durF <= 6 ? 1.75 : 2.25);
-                const coE = (durE <= 4) ? 1.25 : (durE <= 6 ? 1.75 : 2.25);
+function validerDates(acq,serv,open,close){
+  if(serv<acq) throw "Mise en service antérieure à l'acquisition";
+  if(close<=open) throw "Clôture antérieure à l'ouverture";
+}
 
-                for (let i = 0; i < 50; i++) {
-                    let dbtEx = new Date(bDb); dbtEx.setFullYear(dbtEx.getFullYear() + i);
-                    let finEx = new Date(bFi); finEx.setFullYear(finEx.getFullYear() + i);
-                    let dotE = 0, dotF = 0, repS = 0;
+function calculer(){
+  try{
+    const baseHT=+d('baseHT').value||0;
+    const acq=new Date(d('dateAcq').value);
+    const serv=new Date(d('dateServ').value);
+    const open=new Date(d('dateOpen').value);
+    const close=new Date(d('dateClose').value);
 
-                    const isOutYear = (isCsReal && dCs < finEx);
-                    if(isOutYear) finEx = dCs;
+    validerDates(acq,serv,open,close);
 
-                    let deb = (i === 0) ? (dSv > dbtEx ? dSv : dbtEx) : dbtEx;
-                    let isFull = (deb.getTime() <= dbtEx.getTime() && finEx.getTime() >= (new Date(finEx.getFullYear(), finEx.getMonth(), finEx.getDate())).getTime());
-                    
-                    // --- MOTEUR ECONOMIQUE ---
-                    if (cE < (baseE - 0.01)) {
-                        if (getV('typeEco') === "degressif") {
-                            let tD = (1/durE) * coE;
-                            if (i === 0) dotE = baseE * tD * ((13 - (dSv.getMonth() + 1)) / 12);
-                            else if (isOutYear) dotE = ((baseE - cE) * tD / 12) * dCs.getMonth(); // Mois pleins jusqu'au mois de cession
-                            else dotE = Math.max((baseE - cE) * tD, (baseE - cE) / (durE - i));
-                        } else {
-                            let nbJ = (bT === "360") ? getJ360(deb, finEx) : Math.floor((finEx - deb) / 86400000) + 1;
-                            let rat = nbJ / (bT === "360" ? 360 : 365);
-                            dotE = Math.min((baseE / durE) * rat, baseE - cE);
-                        }
-                    }
+    let base=baseHT;
+    if(d('isVehicule').checked) base*=1.2;
+    const vr=+d('valeurResiduelle').value||0;
+    base-=vr;
 
-                    // --- MOTEUR FISCAL ---
-                    if (actF && cF < (baseF - 0.01)) {
-                        if (getV('typeFisc') === "degressif") {
-                            let tD = (1/durF) * coF;
-                            if (i === 0) dotF = baseF * tD * ((13 - (dAc.getMonth() + 1)) / 12);
-                            else if (isOutYear) dotF = ((baseF - cF) * tD / 12) * dCs.getMonth(); // Mois pleins
-                            else dotF = Math.max((baseF - cF) * tD, (baseF - cF) / (durF - i));
-                        } else {
-                            let nbJ = (bT === "360") ? getJ360(deb, finEx) : Math.floor((finEx - deb) / 86400000) + 1;
-                            let rat = nbJ / (bT === "360" ? 360 : 365);
-                            dotF = Math.min((baseF / durF) * rat, baseF - cF);
-                        }
-                    } else if (!actF) dotF = dotE;
+    d('baseAmort').innerText=€(base);
 
-                    dotE = Math.min(dotE, baseE - cE);
-                    dotF = Math.min(dotF, baseF - cF);
-                    let der = dotF - dotE;
+    const duree=+d('dureeCompta').value;
+    const taux=1/duree;
+    let cumul=0;
+    let html='<tr class="bg-slate-800 text-white"><th>Année</th><th>Dotation</th><th>Cumul</th><th>VNC</th></tr>';
 
-                    if (subTot > 0) {
-                        if (isOutYear) repS = subTot - cS;
-                        else repS = Math.min((actF ? dotF : dotE) * (subTot / (actF ? baseF : baseE)), subTot - cS);
-                    }
+    for(let i=0;i<duree;i++){
+      const an=open.getFullYear()+i;
+      let dot=base*taux;
+      if(i===0 && serv>open) dot*=prorata(serv,close);
+      if(i===duree-1) dot=base-cumul;
+      cumul+=dot;
+      html+=`<tr><td>${an}</td><td>${€(dot)}</td><td>${€(cumul)}</td><td>${€(base-cumul)}</td></tr>`;
+    }
 
-                    if(dotE <= 0 && dotF <= 0 && i > 0 && (subTot > 0 ? repS <= 0 : true)) break;
-                    plan.push({ annee: finEx.getFullYear(), dotE, cE: (cE += dotE), dotF, cF: (cF += dotF), der, cD: (cD += der), repS, cS: (cS += repS), isOut: isOutYear });
-                    if(isOutYear) break;
-                }
-                return plan;
-            };
+    d('tableAmort').innerHTML=html;
+    d('resultats').classList.remove('hidden');
 
-            const pNormal = runCalcul(false);
-            const pCess = hasCs ? runCalcul(true) : null;
-            const target = pCess || pNormal;
+  }catch(e){ alert(e); }
+}
 
-            document.getElementById('zoneTableau').classList.remove('hidden');
-            const rT = (data, id) => {
-                let h = `<thead class="bg-slate-800 text-white uppercase text-[8px]"><tr><th>Année</th><th>Dot. Eco</th><th>Dot. Fisc</th><th>Dot (D)</th><th>Rep (R)</th><th>VNC</th></tr></thead><tbody>`;
-                data.forEach(r => h += `<tr class="border-b ${r.isOut ? 'bg-amber-50' : ''}"><td>${r.annee}</td><td>${formatC(r.dotE)}</td><td>${formatC(r.dotF)}</td><td class="text-blue-700">${r.der > 0.01 ? formatC(r.der) : '-'}</td><td class="text-orange-700">${r.der < -0.01 ? formatC(Math.abs(r.der)) : '-'}</td><td class="bg-slate-50 font-black">${formatC(bBrut - r.cE)}</td></tr>`);
-                document.getElementById(id).innerHTML = h + `</tbody>`;
-            };
-            rT(pNormal, 'tableNormal');
-            if(pCess) { document.getElementById('containerCession').classList.remove('hidden'); rT(pCess, 'tableCession'); }
-            else document.getElementById('containerCession').classList.add('hidden');
-
-            if(subTot > 0) {
-                document.getElementById('containerSub').classList.remove('hidden');
-                let hs = `<thead class="bg-amber-700 text-white uppercase text-[8px]"><tr><th>Année</th><th>Reprise</th><th>Cumul</th><th>Solde</th></tr></thead><tbody>`;
-                pNormal.forEach(r => hs += `<tr class="border-b"><td>${r.annee}</td><td>${formatC(r.repS)}</td><td>${formatC(r.cS)}</td><td class="font-black">${formatC(subTot-r.cS)}</td></tr>`);
-                document.getElementById('tableSub').innerHTML = hs + `</tbody>`;
-            } else document.getElementById('containerSub').classList.add('hidden');
-
-            // Reports N / N-1
-            let ha = `<thead class="bg-blue-900 text-white uppercase text-center"><tr><th>Exercice</th><th>Brut</th><th>Amort. Cumul</th><th>Net N</th><th class="bg-blue-600">Net N-1</th></tr></thead><tbody>`;
-            target.forEach((r, i) => {
-                const n1 = (i === 0) ? 0 : (target[i-1].isOut ? 0 : bBrut - target[i-1].cE);
-                if(r.isOut) ha += `<tr class="bg-blue-50"><td>${r.annee} (AV.)</td><td>${formatC(bBrut)}</td><td>${formatC(r.cE)}</td><td>${formatC(bBrut-r.cE)}</td><td>-</td></tr>`;
-                ha += `<tr class="border-b"><td>${r.annee}${r.isOut ? ' (POST.)' : ''}</td><td>${formatC(r.isOut ? 0 : bBrut)}</td><td>${formatC(r.isOut ? 0 : r.cE)}</td><td class="font-black text-blue-900">${formatC(r.isOut ? 0 : bBrut-r.cE)}</td><td class="text-blue-400">${formatC(n1)}</td></tr>`;
-            });
-            document.getElementById('bilanActif').innerHTML = ha + `</tbody>`;
-
-            let hp = `<thead class="bg-indigo-900 text-white uppercase text-center"><tr><th>Exercice</th><th class="bg-indigo-700">Déro N</th><th class="bg-indigo-500">Déro N-1</th><th class="bg-blue-700">Sub N</th><th class="bg-blue-500">Sub N-1</th></tr></thead><tbody>`;
-            target.forEach((r, i) => {
-                const d1 = (i === 0) ? 0 : (target[i-1].isOut ? 0 : target[i-1].cD);
-                const s1 = (i === 0) ? subTot : (target[i-1].isOut ? 0 : subTot - target[i-1].cS);
-                if(r.isOut) hp += `<tr class="bg-indigo-50"><td>${r.annee} (AV.)</td><td>${formatC(r.cD)}</td><td>-</td><td>${formatC(subTot-r.cS)}</td><td>-</td></tr>`;
-                hp += `<tr class="border-b"><td>${r.annee}${r.isOut?' (POST.)':''}</td><td class="text-indigo-900">${formatC(r.isOut?0:r.cD)}</td><td class="text-indigo-400">${formatC(d1)}</td><td class="text-blue-900">${formatC(r.isOut?0:subTot-r.cS)}</td><td class="text-blue-400">${formatC(s1)}</td></tr>`;
-            });
-            document.getElementById('bilanPassif').innerHTML = hp + `</tbody>`;
-
-            let hr = `<thead class="bg-emerald-900 text-white uppercase text-[8px] text-center"><tr><th rowspan="2">Année</th><th colspan="2" class="bg-emerald-800">Charges Eco</th><th colspan="2" class="bg-emerald-700">Dot Déro</th><th colspan="2" class="bg-emerald-600">Rep Déro</th><th colspan="2" class="bg-emerald-500">Rep Sub</th></tr><tr><th>N</th><th>N-1</th><th>N</th><th>N-1</th><th>N</th><th>N-1</th><th>N</th><th>N-1</th></tr></thead><tbody>`;
-            target.forEach((r, i) => {
-                const n1 = (i === 0) ? { dotE:0, der:0, repS:0 } : target[i-1];
-                const dN = r.der > 0 ? r.der : 0; const d1 = n1.der > 0 ? n1.der : 0;
-                const rN = r.der < 0 ? Math.abs(r.der) : 0; const r1 = n1.der < 0 ? Math.abs(n1.der) : 0;
-                hr += `<tr class="border-b"><td>${r.annee}</td><td class="text-emerald-900 font-bold">${formatC(r.dotE)}</td><td class="text-emerald-300">${formatC(n1.dotE)}</td><td class="text-emerald-900 font-bold">${formatC(dN)}</td><td class="text-emerald-300">${formatC(d1)}</td><td class="text-emerald-900 font-bold">${formatC(rN)}</td><td class="text-emerald-300">${formatC(r1)}</td><td class="text-emerald-900 font-bold">${formatC(r.repS)}</td><td class="text-emerald-300">${formatC(n1.repS)}</td></tr>`;
-            });
-            document.getElementById('compteResultat').innerHTML = hr + `</tbody>`;
-        }
-    </script>
+// UI véhicule
+ d('isVehicule').addEventListener('change',()=>{
+   d('vehiculeBox').classList.toggle('hidden',!d('isVehicule').checked);
+ });
+</script>
 </body>
 </html>
