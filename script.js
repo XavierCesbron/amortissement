@@ -25,7 +25,7 @@ function recalculerBase(){
 d('typeEco').addEventListener('change', e => {
     const container = d('variableInputs');
     container.innerHTML = '';
-    d('totalVariable').innerText = '0';
+    d('totalVariableContainer').classList.toggle('hidden', e.target.value !== 'variable');
     const duree = parseInt(d('dureeEco').value) || 5;
     if(e.target.value === 'variable'){
         container.classList.remove('hidden');
@@ -51,6 +51,9 @@ function majTotalVariable(){
     inputs.forEach(i => total += parseFloat(i.value) || 0);
     d('totalVariable').innerText = total.toFixed(2);
 }
+
+// ------------------ FISCAL COLLAPSIBLE ------------------
+function toggleFiscalMan(){ d('fiscContent').classList.toggle('active'); }
 
 // ------------------ CALCUL ------------------
 d('btnCalculer').addEventListener('click', genererTableau);
@@ -92,23 +95,25 @@ function genererTableau(){
             alert("Dégressif non autorisé pour durée ≤ 2 ans");
             return;
         }
-
         const dateDeb = new Date(d('dateService').value);
         const mois = 12 - dateDeb.getMonth(); // mois complets pour année 1
         const coeff = (duree<=4)?1.25:(duree<=6)?1.75:2.25;
         let vnc = base;
+        let dureeRestante = duree;
 
         for(let i=0;i<duree;i++){
-            let tauxLin = 1/duree;
-            let tauxDeg = tauxLin*coeff;
-            let dot;
-            if(i===0) dot = vnc * tauxDeg * (mois/12);
-            else dot = vnc * tauxDeg;
-            // Si linéaire devient plus favorable, on bascule
+            let tauxLin = 1/dureeRestante;
+            let tauxDeg = (1/duree)*coeff;
+            let dot = vnc*tauxDeg;
+            if(i===0) dot = vnc*tauxDeg*(mois/12);
+
+            // Si linéaire restant devient plus favorable, bascule
             if(dot < vnc*tauxLin) dot = vnc*tauxLin;
+
             cumul += dot;
             plan.push({ annee: i+1, dot, cumul, vnc: base-cumul });
             vnc -= dot;
+            dureeRestante--;
         }
     }
 
