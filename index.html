@@ -1,208 +1,56 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Expert-Amort PRO – Refonte V1</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<title>Plan d’amortissement</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body class="bg-slate-50 p-6 text-xs text-slate-800">
 
-<div class="max-w-6xl mx-auto space-y-6">
-  <header class="text-center border-b pb-4">
-    <h1 class="text-4xl font-black uppercase">Expert-Amort <span class="text-emerald-600">PRO</span></h1>
-    <p class="text-slate-500 font-bold tracking-widest">REFONTE – SOCLE MOTEUR / BASE 360</p>
-  </header>
+<body>
 
-  <!-- ONGLET 1 : INVESTISSEMENT -->
-  <section class="bg-white p-6 rounded-xl border shadow">
-    <h2 class="font-black text-lg text-blue-700 mb-4">1 – INVESTISSEMENT</h2>
+<h2>Investissement</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="space-y-3">
-        <label>Base brute HT</label>
-        <input id="baseHT" type="number" class="w-full border p-2 rounded" />
+<label>Base HT
+  <input type="number" id="baseHT">
+</label><br>
 
-        <label>Date d'acquisition</label>
-        <input id="dateAcq" type="date" class="w-full border p-2 rounded" />
+<label>Date d’acquisition
+  <input type="date" id="dateAcq">
+</label><br>
 
-        <label>Date de mise en service</label>
-        <input id="dateServ" type="date" class="w-full border p-2 rounded" />
+<label>Date mise en service
+  <input type="date" id="dateServ">
+</label><br>
 
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label>Ouverture exercice</label>
-            <input id="dateOpen" type="date" class="w-full border p-2 rounded" />
-          </div>
-          <div>
-            <label>Clôture exercice</label>
-            <input id="dateClose" type="date" class="w-full border p-2 rounded" />
-          </div>
-        </div>
-      </div>
+<label>Ouverture exercice
+  <input type="date" id="dateOpen">
+</label><br>
 
-      <div class="space-y-3">
-        <div class="bg-blue-600 text-white p-3 rounded">
-          <label class="flex items-center gap-2">
-            <input id="isVehicule" type="checkbox" /> Véhicule de tourisme (+20 %)
-          </label>
-          <div id="vehiculeBox" class="hidden mt-2 space-y-2">
-            <label>CO₂ (g/km)</label>
-            <input id="co2" type="number" class="w-full text-black p-1 rounded" />
-            <label>Plafond fiscal</label>
-            <input id="plafondVehicule" type="number" class="w-full text-black p-1 rounded" />
-          </div>
-        </div>
+<label>Clôture exercice
+  <input type="date" id="dateClose">
+</label><br>
 
-        <div class="border p-3 rounded bg-slate-50">
-          <label>Valeur résiduelle</label>
-          <input id="valeurResiduelle" type="number" value="0" class="w-full border p-2 rounded" />
-        </div>
+<label>
+  <input type="checkbox" id="isVehicule">
+  Véhicule de tourisme
+</label><br>
 
-        <div class="border p-3 rounded bg-emerald-50">
-          <label>Subvention (%)</label>
-          <input id="subvPct" type="number" class="w-full border p-2 rounded" />
-          <label>Subvention (montant)</label>
-          <input id="subvMt" type="number" class="w-full border p-2 rounded" />
-        </div>
-      </div>
-    </div>
+<label>Valeur résiduelle
+  <input type="number" id="valeurResiduelle">
+</label><br>
 
-    <div class="mt-4">
-      <span class="uppercase text-slate-500">Base amortissable</span>
-      <div id="baseAmort" class="text-2xl font-black text-emerald-600">0 €</div>
-    </div>
-  </section>
+<label>Durée (années)
+  <input type="number" id="dureeCompta" value="5">
+</label><br><br>
 
-  <!-- ONGLET 2 : METHODES -->
-  <section class="bg-white p-6 rounded-xl border shadow">
-    <h2 class="font-black text-lg text-emerald-700 mb-4">2 – MÉTHODES</h2>
+<button id="btnCalculer">Calculer</button>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="border p-4 rounded">
-        <h3 class="font-bold mb-2">Amortissement comptable</h3>
-        <select id="methCompta" class="w-full border p-2 rounded">
-          <option value="lineaire">Linéaire</option>
-          <option value="degressif">Dégressif</option>
-        </select>
-        <label>Durée (ans)</label>
-        <input id="dureeCompta" type="number" value="5" class="w-full border p-2 rounded" />
-      </div>
+<h3>Base amortissable : <span id="baseAmort">0 €</span></h3>
 
-      <div class="border p-4 rounded">
-        <h3 class="font-bold mb-2">Amortissement fiscal</h3>
-        <label class="flex items-center gap-2">
-          <input id="optFiscal" type="checkbox" /> Activer option fiscale
-        </label>
-        <select id="methFiscal" class="w-full border p-2 rounded">
-          <option value="lineaire">Linéaire</option>
-          <option value="degressif">Dégressif</option>
-        </select>
-        <label>Durée fiscale</label>
-        <input id="dureeFiscal" type="number" value="5" class="w-full border p-2 rounded" />
-      </div>
-    </div>
-  </section>
+<table border="1">
+  <tbody id="tableAmort"></tbody>
+</table>
 
-  <!-- ONGLET 3 : CESSION -->
-  <section class="bg-white p-6 rounded-xl border shadow">
-    <h2 class="font-black text-lg text-red-700 mb-4">3 – CESSION</h2>
-    <label class="flex items-center gap-2 mb-2">
-      <input id="hasCession" type="checkbox" /> Activer la cession
-    </label>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <input id="dateCession" type="date" class="border p-2 rounded" />
-      <input id="prixCession" type="number" class="border p-2 rounded" placeholder="Prix de cession" />
-    </div>
-  </section>
-
-  <button onclick="calculer()" class="w-full bg-emerald-600 text-white p-4 rounded-xl font-black text-lg">CALCULER</button>
-
-  <section id="resultats" class="hidden bg-white p-6 rounded-xl border shadow">
-    <h2 class="font-black mb-4">Plan d'amortissement</h2>
-    <table id="tableAmort" class="w-full text-xs"></table>
-  </section>
-</div>
-
-<script>
-// ================= OUTILS =================
-const € = v => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(v||0);
-const d = id => document.getElementById(id);
-
-// Base 360
-function jours360(d1,d2){
-  const y1=d1.getFullYear(),y2=d2.getFullYear();
-  const m1=d1.getMonth()+1,m2=d2.getMonth()+1;
-  const j1=Math.min(d1.getDate(),30);
-  const j2=Math.min(d2.getDate(),30);
-  return (y2-y1)*360+(m2-m1)*30+(j2-j1)+1;
-}
-
-function prorata(d1,d2){ return jours360(d1,d2)/360; }
-
-function validerDates(acq,serv,open,close){
-  if(serv<acq) throw "Mise en service antérieure à l'acquisition";
-  if(close<=open) throw "Clôture antérieure à l'ouverture";
-}
-
-function calculer(){
-  try{
-    const baseHT=+d('baseHT').value||0;
-    const acq=new Date(d('dateAcq').value);
-    const serv=new Date(d('dateServ').value);
-    const open=new Date(d('dateOpen').value);
-    const close=new Date(d('dateClose').value);
-
-    validerDates(acq,serv,open,close);
-
-    let base=baseHT;
-    if(d('isVehicule').checked) base*=1.2;
-    const vr=+d('valeurResiduelle').value||0;
-    base-=vr;
-
-    d('baseAmort').innerText=€(base);
-
-    const duree=+d('dureeCompta').value;
-    const taux=1/duree;
-    let cumul=0;
-    let html='<tr class="bg-slate-800 text-white"><th>Année</th><th>Dotation</th><th>Cumul</th><th>VNC</th></tr>';
-
-    for(let i=0;i<duree;i++){
-      const an=open.getFullYear()+i;
-      let dot=base*taux;
-      if(i===0 && serv>open) dot*=prorata(serv,close);
-      if(i===duree-1) dot=base-cumul;
-      cumul+=dot;
-      html+=`<tr><td>${an}</td><td>${€(dot)}</td><td>${€(cumul)}</td><td>${€(base-cumul)}</td></tr>`;
-    }
-
-    d('tableAmort').innerHTML=html;
-    d('resultats').classList.remove('hidden');
-
-  }catch(e){ alert(e); }
-}
-
-// UI véhicule
- d('isVehicule').addEventListener('change',()=>{
-   d('vehiculeBox').classList.toggle('hidden',!d('isVehicule').checked);
-   recalculerBase();
-});
-
-// auto-remplissage dates
-d('dateAcq').addEventListener('change',()=>{
-  const v=d('dateAcq').value;
-  if(!v) return;
-  d('dateServ').value=v;
-  const y=new Date(v).getFullYear();
-  d('dateOpen').value=`${y}-01-01`;
-  d('dateClose').value=`${y}-12-31`;
-  recalculerBase();
-});
-
-['baseHT','valeurResiduelle'].forEach(id=>{
-  d(id).addEventListener('input',recalculerBase);
-});
- });
-</script>
+<script src="script.js" defer></script>
 </body>
 </html>
