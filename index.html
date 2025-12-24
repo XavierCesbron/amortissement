@@ -3,48 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expert-Amort PRO</title>
+    <title>Expert-Amort PRO - V6</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
         .collapsible-content.active { max-height: 1200px; }
-        th { font-size: 0.65rem; padding: 0.5rem !important; }
-        td { font-size: 0.75rem; padding: 0.5rem !important; }
+        th { font-size: 0.65rem; padding: 0.5rem !important; border: 1px solid #e2e8f0; }
+        td { font-size: 0.75rem; padding: 0.5rem !important; border: 1px solid #e2e8f0; }
     </style>
 </head>
 <body class="bg-slate-50 p-4 font-sans text-slate-800">
 
     <div class="max-w-6xl mx-auto pb-20">
         <header class="mb-6 text-center">
-            <h1 class="text-3xl font-extrabold text-slate-900 italic">Expert-Amort <span class="text-emerald-600 font-black tracking-tighter text-4xl">PRO</span></h1>
+            <h1 class="text-3xl font-extrabold text-slate-900 italic uppercase">Expert-Amort <span class="text-emerald-600 font-black tracking-tighter text-4xl">PRO</span></h1>
         </header>
 
         <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-4">
             <div class="flex items-center gap-2 mb-4 border-b pb-2">
                 <span class="bg-blue-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold">1</span>
-                <h2 class="text-lg font-bold">Données de l'Investissement</h2>
+                <h2 class="text-lg font-bold">Investissement</h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-3">
-                    <label class="block text-xs font-bold uppercase text-slate-400">Calendrier</label>
                     <div class="grid grid-cols-2 gap-2">
-                        <div><span class="text-xs">Acquisition:</span><input type="date" id="dateAcq" class="w-full border p-1 rounded text-sm"></div>
-                        <div><span class="text-xs">Mise en service:</span><input type="date" id="dateService" class="w-full border p-1 rounded text-sm font-normal"></div>
+                        <div><span class="text-[10px] font-bold uppercase text-slate-400">Acquisition</span><input type="date" id="dateAcq" class="w-full border p-1 rounded text-sm"></div>
+                        <div><span class="text-[10px] font-bold uppercase text-slate-400">Mise en service</span><input type="date" id="dateService" class="w-full border p-1 rounded text-sm"></div>
                     </div>
                     <div class="grid grid-cols-2 gap-2 mt-2 bg-slate-50 p-2 rounded">
-                        <div><span class="text-[10px] uppercase font-bold text-slate-400">Début Exercice:</span><input type="date" id="bilanDebut" class="w-full border p-1 rounded text-xs"></div>
-                        <div><span class="text-[10px] uppercase font-bold text-slate-400">Fin Exercice:</span><input type="date" id="bilanFin" class="w-full border p-1 rounded text-xs"></div>
+                        <div><span class="text-[10px] font-bold text-slate-400">DÉBUT EXERCICE</span><input type="date" id="bilanDebut" class="w-full border p-1 rounded text-xs"></div>
+                        <div><span class="text-[10px] font-bold text-slate-400">FIN EXERCICE</span><input type="date" id="bilanFin" class="w-full border p-1 rounded text-xs"></div>
                     </div>
                 </div>
                 <div class="space-y-3">
                     <input type="number" id="montantHT" placeholder="Montant HT" class="w-full border-2 p-2 rounded-lg text-xl font-bold text-blue-800 border-blue-100">
                     <div class="flex items-center gap-2 p-2 bg-blue-50 rounded">
-                        <input type="checkbox" id="isVehicule" class="w-4 h-4">
-                        <label for="isVehicule" class="text-xs font-bold">Véhicule de tourisme (TVA incluse)</label>
+                        <input type="checkbox" id="isVehicule" class="w-4 h-4 text-blue-600">
+                        <label for="isVehicule" class="text-xs font-bold text-blue-900">VÉHICULE DE TOURISME (TVA+)</label>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="text-xs font-bold text-slate-500 w-1/3 italic uppercase">Valeur Résiduelle :</span>
-                        <input type="number" id="valeurResiduelle" value="0" class="w-2/3 border p-1 rounded text-right text-sm">
+                        <input type="number" id="valeurResiduelle" value="0" class="w-2/3 border p-1 rounded text-right text-sm font-bold">
                     </div>
                 </div>
             </div>
@@ -53,20 +52,21 @@
         <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-4">
             <div class="flex items-center gap-2 mb-4 border-b pb-2">
                 <span class="bg-emerald-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold">2</span>
-                <h2 class="text-lg font-bold">Méthode d'Amortissement</h2>
+                <h2 class="text-lg font-bold">Méthodes</h2>
             </div>
             
-            <div class="mb-4 flex gap-4 items-center justify-center bg-slate-800 text-white p-2 rounded text-xs uppercase font-bold">
-                <span>Base :</span>
+            <div class="mb-4 flex gap-4 items-center justify-center bg-slate-800 text-white p-2 rounded text-xs font-bold">
+                <span>BASE PRORATA :</span>
                 <select id="baseJours" class="bg-slate-700 p-1 rounded"><option value="360">360 jours</option><option value="365">365 jours</option></select>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-100">
-                    <h3 class="text-xs font-bold text-emerald-800 mb-3 uppercase">📊 Économique</h3>
+                    <h3 class="text-xs font-bold text-emerald-800 mb-3 uppercase">📊 Économique (Comptable)</h3>
                     <select id="typeEco" class="w-full border p-2 rounded text-sm mb-3">
                         <option value="lineaire">Linéaire</option>
                         <option value="degressif">Dégressif</option>
+                        <option value="variable">Variable (Unités d'œuvre)</option>
                     </select>
                     <input type="number" id="dureeEco" value="5" class="w-full border p-2 rounded text-sm font-bold" placeholder="Durée ans">
                 </div>
@@ -89,44 +89,41 @@
             <button onclick="toggleSection('cessionContent')" class="w-full flex items-center justify-between bg-white p-4 rounded-xl shadow-sm border border-slate-200">
                 <div class="flex items-center gap-2 text-slate-700">
                     <span class="bg-slate-300 text-white w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold">3</span>
-                    <h2 class="text-lg font-bold">Données de Cession</h2>
+                    <h2 class="text-lg font-bold text-slate-500">Données de Cession</h2>
                 </div>
                 <span>➕</span>
             </button>
             <div id="cessionContent" class="collapsible-content bg-white border-x border-b border-slate-200 rounded-b-xl mx-2">
-                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div><label class="block text-xs font-bold text-red-700 mb-1">DATE DE CESSION</label><input type="date" id="dateCession" class="w-full border p-2 rounded text-sm"></div>
-                    <div class="flex gap-2">
-                        <div><label class="text-[10px] font-bold">Début Ex.</label><input type="date" id="cessBilanDebut" class="w-full border p-1 rounded text-[10px]"></div>
-                        <div><label class="text-[10px] font-bold">Fin Ex.</label><input type="date" id="cessBilanFin" class="w-full border p-1 rounded text-[10px]"></div>
-                    </div>
-                </div>
+                <div class="p-4"><label class="block text-xs font-bold text-red-700 mb-1 uppercase">Date de cession</label><input type="date" id="dateCession" class="w-full border p-2 rounded text-sm"></div>
             </div>
         </section>
 
-        <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4 sticky bottom-4 z-50">
-            <div><span class="text-slate-400 text-[10px] uppercase font-bold">Base Amort. Eco</span><div id="resultatBase" class="text-3xl font-black text-emerald-400">0,00 €</div></div>
-            <button onclick="genererTableau()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-12 py-4 rounded-xl font-bold uppercase tracking-tight">Générer le Tableau</button>
+        <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4 sticky bottom-4 z-50 border-t-4 border-emerald-500">
+            <div id="recapBase">
+                <span class="text-slate-400 text-[10px] uppercase font-bold tracking-widest">Base Amort. Éco</span>
+                <div id="resultatBase" class="text-3xl font-black text-emerald-400">0,00 €</div>
+            </div>
+            <button onclick="genererTableau()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-12 py-5 rounded-xl font-bold uppercase shadow-lg transition-transform active:scale-95">Calculer</button>
         </div>
 
         <div id="zoneTableau" class="mt-8 hidden">
              <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-lg">
                 <table class="w-full text-left border-collapse">
-                    <thead class="bg-slate-800 text-white text-[10px] uppercase">
+                    <thead class="bg-slate-800 text-white text-[9px] uppercase tracking-widest text-center">
                         <tr>
-                            <th class="border-r border-slate-700" rowspan="2">Exercice</th>
-                            <th class="text-center border-b border-slate-700 border-r border-slate-700" colspan="2">Comptable</th>
-                            <th class="text-center border-b border-slate-700 border-r border-slate-700" colspan="2">Fiscal</th>
-                            <th class="text-center border-b border-slate-700 border-r border-slate-700" colspan="3">Dérogatoire</th>
-                            <th class="text-right" rowspan="2">VNC Eco</th>
+                            <th rowspan="2">Exercice</th>
+                            <th colspan="2" class="bg-emerald-900/40">Économique</th>
+                            <th colspan="2" class="bg-blue-900/40 border-l border-slate-700">Fiscal</th>
+                            <th colspan="3" class="bg-slate-700 border-l border-slate-600">Dérogatoire</th>
+                            <th rowspan="2" class="p-4">VNC Eco</th>
                         </tr>
-                        <tr>
-                            <th class="text-right">Dot.</th><th class="text-right border-r border-slate-700 text-slate-400">Cumul</th>
-                            <th class="text-right">Dot.</th><th class="text-right border-r border-slate-700 text-slate-400">Cumul</th>
-                            <th class="text-right text-blue-300">Dot.</th><th class="text-right text-orange-300">Rep.</th><th class="text-right border-r border-slate-700 text-slate-400">Cumul</th>
+                        <tr class="text-[8px] bg-slate-700/50">
+                            <th class="text-right p-2">Dotation</th><th class="text-right p-2 text-slate-400">Cumul</th>
+                            <th class="text-right p-2 border-l border-slate-600">Dotation</th><th class="text-right p-2 text-slate-400">Cumul</th>
+                            <th class="text-right p-2 border-l border-slate-600 text-blue-200">Dot.</th><th class="text-right p-2 text-orange-200">Rep.</th><th class="text-right p-2 text-slate-400">Cumul</th>
                         </tr>
                     </thead>
-                    <tbody id="corpsTableau" class="divide-y divide-slate-100"></tbody>
+                    <tbody id="corpsTableau" class="divide-y divide-slate-100 font-mono italic"></tbody>
                 </table>
             </div>
         </div>
@@ -135,114 +132,111 @@
     <script>
         function toggleSection(id) { document.getElementById(id).classList.toggle('active'); }
 
-        const inputs = ['dateAcq', 'dateService', 'montantHT', 'isVehicule', 'valeurResiduelle', 'dateCession'];
-        inputs.forEach(id => {
+        const getV = (id) => document.getElementById(id).value;
+        const formatC = (v) => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(v);
+
+        ['dateAcq', 'montantHT', 'isVehicule', 'valeurResiduelle'].forEach(id => {
             document.getElementById(id).addEventListener('input', () => {
-                const val = document.getElementById(id).value;
-                if (id === 'dateAcq') {
-                    document.getElementById('dateService').value = val;
-                    const y = new Date(val).getFullYear();
-                    document.getElementById('bilanDebut').value = `${y}-01-01`;
-                    document.getElementById('bilanFin').value = `${y}-12-31`;
-                }
-                if (id === 'dateCession' && val) {
-                    const y = new Date(val).getFullYear();
-                    document.getElementById('cessBilanDebut').value = `${y}-01-01`;
-                    document.getElementById('cessBilanFin').value = `${y}-12-31`;
-                }
+                if(id === 'dateAcq') document.getElementById('dateService').value = getV('dateAcq');
                 calculerBase();
             });
         });
 
-        function formatCur(v) { return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(v); }
         function calculerBase() {
-            const mt = parseFloat(document.getElementById('montantHT').value) || 0;
-            const vr = parseFloat(document.getElementById('valeurResiduelle').value) || 0;
+            const mt = parseFloat(getV('montantHT')) || 0;
+            const vr = parseFloat(getV('valeurResiduelle')) || 0;
             const base = (document.getElementById('isVehicule').checked ? mt * 1.2 : mt) - vr;
-            document.getElementById('resultatBase').innerText = formatCur(base);
+            document.getElementById('resultatBase').innerText = formatC(base);
             return base;
         }
 
-        function getJours360(debut, fin) {
-            let d1 = Math.min(debut.getDate(), 30), m1 = debut.getMonth(), y1 = debut.getFullYear();
-            let d2 = Math.min(fin.getDate(), 30), m2 = fin.getMonth(), y2 = fin.getFullYear();
-            return (y2 - y1) * 360 + (m2 - m1) * 30 + (d2 - d1) + 1;
+        function getJ360(d1, d2) {
+            let day1 = Math.min(30, d1.getDate()), month1 = d1.getMonth(), year1 = d1.getFullYear();
+            let day2 = Math.min(30, d2.getDate()), month2 = d2.getMonth(), year2 = d2.getFullYear();
+            return (year2 - year1) * 360 + (month2 - month1) * 30 + (day2 - day1) + 1;
         }
 
         function genererTableau() {
-            const mtHT = parseFloat(document.getElementById('montantHT').value) || 0;
-            const vr = parseFloat(document.getElementById('valeurResiduelle').value) || 0;
-            const isVehicule = document.getElementById('isVehicule').checked;
-            const baseEco = (isVehicule ? mtHT * 1.2 : mtHT) - vr;
-            const baseFisc = (isVehicule ? mtHT * 1.2 : mtHT);
-            
-            const dateAcq = new Date(document.getElementById('dateAcq').value);
-            const dateServ = new Date(document.getElementById('dateService').value);
-            const durEco = parseInt(document.getElementById('dureeEco').value);
-            const durFisc = parseInt(document.getElementById('dureeFisc').value);
-            const modeEco = document.getElementById('typeEco').value;
-            const modeFisc = document.getElementById('typeFisc').value;
-            const baseTemps = document.getElementById('baseJours').value;
+            const mtHT = parseFloat(getV('montantHT')) || 0;
+            const vr = parseFloat(getV('valeurResiduelle')) || 0;
+            const isTVA = document.getElementById('isVehicule').checked;
+            const baseE = (isTVA ? mtHT * 1.2 : mtHT) - vr;
+            const baseF = (isTVA ? mtHT * 1.2 : mtHT);
+            const dAcq = new Date(getV('dateAcq')), dServ = new Date(getV('dateService'));
+            const bTemps = getV('baseJours'), durE = parseInt(getV('dureeEco')), durF = parseInt(getV('dureeFisc'));
+            const modE = getV('typeEco'), modF = getV('typeFisc');
+
+            if (isNaN(dServ.getTime())) return alert("Saisissez une date valide.");
 
             document.getElementById('zoneTableau').classList.remove('hidden');
             const corps = document.getElementById('corpsTableau');
             corps.innerHTML = "";
 
-            let cEco = 0, cFisc = 0, cDerog = 0;
-            let y = dateServ.getFullYear();
-            let coeff = (durFisc <= 4) ? 1.25 : (durFisc <= 6 ? 1.75 : 2.25);
+            let cE = 0, cF = 0, cDerog = 0, y = dServ.getFullYear();
+            let coeff = (durF <= 4) ? 1.25 : (durF <= 6 ? 1.75 : 2.25);
 
-            for (let i = 0; i <= Math.max(durEco, durFisc) + 1; i++) {
-                let currentY = y + i;
+            // On boucle sur max exercices. En dégressif, pas de débordement calendaire comme le linéaire.
+            const maxExercices = Math.max(durE + 1, durF); 
+
+            for (let i = 0; i < maxExercices; i++) {
+                let currY = y + i;
                 let dotE = 0, dotF = 0;
 
-                // 1. CALCUL COMPTA (Respecte mode)
-                if (cEco < baseEco) {
-                    if (modeEco === "lineaire") {
+                // --- 1. ÉCONOMIQUE ---
+                if (cE < baseE) {
+                    if (modE === "lineaire") {
                         if (i === 0) {
-                            let jours = (baseTemps === "360") ? getJours360(dateServ, new Date(currentY, 11, 30)) : Math.floor((new Date(currentY, 11, 31) - dateServ) / 86400000) + 1;
-                            dotE = (baseEco / durEco) * (jours / (baseTemps === "360" ? 360 : 365));
-                        } else dotE = Math.min(baseEco / durEco, baseEco - cEco);
-                    } else { /* Dégressif Eco si besoin */ }
+                            let jours = (bTemps === "360") ? getJ360(dServ, new Date(currY, 11, 30)) : Math.floor((new Date(currY, 11, 31) - dServ) / 86400000) + 1;
+                            dotE = (baseE / durE) * (jours / (bTemps === "360" ? 360 : 365));
+                        } else dotE = Math.min(baseE / durE, baseE - cE);
+                    } else if (modE === "degressif") {
+                        let tDeg = (1 / durE) * coeff;
+                        let annRest = durE - i;
+                        if (i === 0) {
+                            let mois = 12 - dServ.getMonth();
+                            dotE = baseE * tDeg * (mois / 12);
+                        } else {
+                            let tLin = 1 / (durE - i + 1);
+                            dotE = (tDeg > tLin) ? (baseE - cE) * tDeg : (baseE - cE) / (durE - i + 1);
+                        }
+                    }
                 }
 
-                // 2. CALCUL FISCAL (Respecte mode + Bascule)
-                if (cFisc < baseFisc) {
-                    if (modeFisc === "degressif") {
-                        let tDeg = (1 / durFisc) * coeff;
-                        let tLin = 1 / (durFisc - i + (i === 0 ? 0 : 0)); // Années restantes
+                // --- 2. FISCAL ---
+                if (cF < baseF && i < durF) {
+                    if (modF === "degressif") {
+                        let tDeg = (1 / durF) * coeff;
                         if (i === 0) {
-                            let mois = 12 - dateAcq.getMonth();
-                            dotF = baseFisc * tDeg * (mois / 12);
+                            let mois = 12 - dAcq.getMonth();
+                            dotF = baseF * tDeg * (mois / 12);
                         } else {
-                            let vncF = baseFisc - cFisc;
-                            let tLinBascule = 1 / (durFisc - i + 1);
-                            dotF = (tDeg > tLinBascule) ? vncF * tDeg : vncF / (durFisc - i + 1);
+                            let tLin = 1 / (durF - i); // Durée restant à amortir
+                            dotF = (tDeg > tLin) ? (baseF - cF) * tDeg : (baseF - cF) / (durF - i);
                         }
-                    } else {
+                    } else { // Linéaire fiscal
                         if (i === 0) {
-                            let jours = (baseTemps === "360") ? getJours360(dateServ, new Date(currentY, 11, 30)) : Math.floor((new Date(currentY, 11, 31) - dateServ) / 86400000) + 1;
-                            dotF = (baseFisc / durFisc) * (jours / (baseTemps === "360" ? 360 : 365));
-                        } else dotF = Math.min(baseFisc / durFisc, baseFisc - cFisc);
+                            let jours = (bTemps === "360") ? getJ360(dServ, new Date(currY, 11, 30)) : Math.floor((new Date(currY, 11, 31) - dServ) / 86400000) + 1;
+                            dotF = (baseF / durF) * (jours / (bTemps === "360" ? 360 : 365));
+                        } else dotF = Math.min(baseF / durF, baseF - cF);
                     }
-                    dotF = Math.min(dotF, baseFisc - cFisc);
                 }
+                dotF = Math.min(dotF, baseF - cF);
 
                 let dDerog = dotF - dotE;
                 if (dotE <= 0 && dotF <= 0 && i > 0) break;
 
-                cEco += dotE; cFisc += dotF; cDerog += dDerog;
+                cE += dotE; cF += dotF; cDerog += dDerog;
 
                 corps.innerHTML += `<tr>
-                    <td class="p-4 font-bold bg-slate-50">${currentY}</td>
-                    <td class="text-right font-bold text-emerald-600">${formatCur(dotE)}</td>
-                    <td class="text-right text-[10px] text-slate-400 border-r border-slate-100">${formatCur(cEco)}</td>
-                    <td class="text-right font-bold text-blue-600">${formatCur(dotF)}</td>
-                    <td class="text-right text-[10px] text-slate-400 border-r border-slate-100">${formatCur(cFisc)}</td>
-                    <td class="text-right text-blue-800 font-bold">${dDerog > 0 ? formatCur(dDerog) : '-'}</td>
-                    <td class="text-right text-orange-700 font-bold">${dDerog < 0 ? formatCur(Math.abs(dDerog)) : '-'}</td>
-                    <td class="text-right text-[10px] text-slate-400 border-r border-slate-100">${formatCur(cDerog)}</td>
-                    <td class="text-right font-bold bg-slate-50">${formatCur((baseEco + vr) - cEco)}</td>
+                    <td class="p-3 font-bold bg-slate-50 border-r">${currY}</td>
+                    <td class="text-right font-bold text-emerald-700">${formatC(dotE)}</td>
+                    <td class="text-right text-[9px] text-slate-400 border-r italic">${formatC(cE)}</td>
+                    <td class="text-right font-bold text-blue-700">${formatC(dotF)}</td>
+                    <td class="text-right text-[9px] text-slate-400 border-r italic">${formatC(cF)}</td>
+                    <td class="text-right text-blue-800 font-black border-l">${dDerog > 0 ? formatC(dDerog) : '-'}</td>
+                    <td class="text-right text-orange-600 font-black">${dDerog < 0 ? formatC(Math.abs(dDerog)) : '-'}</td>
+                    <td class="text-right text-[9px] font-bold border-r ${Math.abs(cDerog - vr) < 0.1 ? 'text-emerald-500' : 'text-slate-500'}">${formatC(cDerog)}</td>
+                    <td class="text-right font-bold bg-slate-50">${formatC((baseE + vr) - cE)}</td>
                 </tr>`;
             }
         }
