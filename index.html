@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expert-Amort PRO - V11 SOCLE</title>
+    <title>Expert-Amort PRO - V12 SOCLE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
@@ -12,6 +12,7 @@
         .th-sub { border-right: 1px solid white !important; }
         th, td { border: 1px solid #e2e8f0; padding: 10px !important; }
         .font-numeric { font-family: 'Courier New', Courier, monospace; font-weight: 700; }
+        .alert-orange { background-color: #fff7ed; border: 1px solid #fdba74; color: #9a3412; }
     </style>
 </head>
 <body class="bg-slate-50 p-6 font-sans text-slate-800">
@@ -19,7 +20,7 @@
     <div class="max-w-6xl mx-auto pb-24">
         <header class="mb-8 text-center border-b-2 border-slate-200 pb-4">
             <h1 class="text-4xl font-black text-slate-900 italic uppercase">Expert-Amort <span class="text-emerald-600 tracking-tighter">PRO</span></h1>
-            <p class="text-slate-500 font-bold uppercase text-xs tracking-widest">Base de calcul certifiée V11</p>
+            <p class="text-slate-500 font-bold uppercase text-xs tracking-widest">Base de calcul certifiée V12 - Prorata Exercice</p>
         </header>
 
         <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-4 font-bold">
@@ -28,15 +29,17 @@
                 <h2 class="text-xl font-bold uppercase tracking-tight">Investissement & Exercice</h2>
             </div>
             
+            <div id="dateAlert" class="hidden mb-4 p-3 rounded-lg text-xs font-bold"></div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
-                        <div><label class="text-[10px] uppercase text-slate-400">Date Acquisition</label><input type="date" id="dateAcq" class="w-full border p-2 rounded-lg text-sm bg-slate-50"></div>
-                        <div><label class="text-[10px] uppercase text-slate-400">Mise en service</label><input type="date" id="dateService" class="w-full border p-2 rounded-lg text-sm"></div>
+                        <div><label class="text-[10px] uppercase text-slate-400 font-black">Date Acquisition</label><input type="date" id="dateAcq" class="w-full border p-2 rounded-lg text-sm bg-slate-50"></div>
+                        <div><label class="text-[10px] uppercase text-slate-400 font-normal text-slate-500">Mise en service</label><input type="date" id="dateService" class="w-full border p-2 rounded-lg text-sm"></div>
                     </div>
                     <div class="grid grid-cols-2 gap-4 bg-blue-50 p-4 rounded-xl border border-blue-100 shadow-inner">
-                        <div><label class="text-[9px] text-blue-500 uppercase font-black tracking-widest">Ouverture Exercice</label><input type="date" id="bilanDebut" class="w-full border p-1 rounded text-xs bg-white focus:ring-2 ring-blue-200"></div>
-                        <div><label class="text-[9px] text-blue-500 uppercase font-black tracking-widest">Clôture Exercice</label><input type="date" id="bilanFin" class="w-full border p-1 rounded text-xs bg-white focus:ring-2 ring-blue-200"></div>
+                        <div><label class="text-[9px] text-blue-500 uppercase font-black">Ouverture Exercice</label><input type="date" id="bilanDebut" class="w-full border p-1 rounded text-xs bg-white"></div>
+                        <div><label class="text-[9px] text-blue-500 uppercase font-black">Clôture Exercice</label><input type="date" id="bilanFin" class="w-full border p-1 rounded text-xs bg-white"></div>
                     </div>
                 </div>
                 <div class="space-y-4">
@@ -44,9 +47,9 @@
                     <div class="flex items-center gap-3 p-3 bg-blue-600 text-white rounded-xl">
                         <input type="checkbox" id="isVehicule" class="w-5 h-5 cursor-pointer"><label for="isVehicule" class="text-xs uppercase font-black">Véhicule de Tourisme (+TVA 20%)</label>
                     </div>
-                    <div class="flex items-center justify-between p-3 bg-slate-100 rounded-xl border">
-                        <span class="text-[10px] uppercase font-black text-slate-500 italic">Valeur Résiduelle (VR)</span>
-                        <input type="number" id="valeurResiduelle" value="0" class="w-32 border p-2 rounded-lg text-right font-black text-red-600 bg-white shadow-inner">
+                    <div class="flex items-center justify-between p-3 bg-slate-100 rounded-xl border font-bold">
+                        <span class="text-[10px] uppercase text-slate-500 italic">Valeur Résiduelle (VR)</span>
+                        <input type="number" id="valeurResiduelle" value="0" class="w-32 border p-2 rounded-lg text-right font-black text-red-600 bg-white">
                     </div>
                 </div>
             </div>
@@ -58,7 +61,7 @@
                 <h2 class="text-xl font-bold uppercase tracking-tight">Méthodes & Base de Temps</h2>
             </div>
 
-            <div class="mb-8 p-3 bg-slate-800 text-white rounded-xl flex gap-6 items-center justify-center shadow-lg">
+            <div class="mb-8 p-3 bg-slate-800 text-white rounded-xl flex gap-6 items-center justify-center">
                 <span class="text-[10px] tracking-widest uppercase text-slate-400 font-black">Base Prorata :</span>
                 <select id="baseJours" class="bg-slate-700 p-2 rounded-lg text-xs font-bold border-none">
                     <option value="360">360 jours (Méthode Comptable - 30j/mois)</option>
@@ -81,7 +84,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="relative">
+                <div>
                     <button onclick="toggleFiscal()" class="w-full flex justify-between p-5 bg-blue-50 border border-blue-200 rounded-2xl font-black text-xs uppercase text-blue-700 hover:bg-blue-100 transition-all">⚖️ Option Fiscal & Dérogatoire <span id="fiscArrow">➕</span></button>
                     <div id="fiscContent" class="collapsible-content">
                         <div class="mt-3 p-5 bg-white rounded-2xl border-2 border-blue-100 shadow-xl space-y-4">
@@ -106,12 +109,12 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                    <label class="text-[10px] uppercase text-slate-400">Date de cession</label>
+                    <label class="text-[10px] uppercase text-slate-400 font-black">Date de cession</label>
                     <input type="date" id="dateCession" class="w-full border-2 p-3 rounded-xl text-sm focus:border-red-500 outline-none">
                 </div>
                 <div>
-                    <label class="text-[10px] uppercase text-slate-400">Prix de cession (HT)</label>
-                    <input type="number" id="prixCession" placeholder="0.00" class="w-full border-2 p-3 rounded-xl text-xl font-black text-red-800 border-red-50">
+                    <label class="text-[10px] uppercase text-slate-400 font-black">Prix de cession (HT)</label>
+                    <input type="number" id="prixCession" placeholder="0.00" class="w-full border-2 p-3 rounded-xl text-xl font-black text-blue-900 border-blue-50 bg-slate-50">
                 </div>
             </div>
         </section>
@@ -122,7 +125,7 @@
         </div>
 
         <div id="zoneTableau" class="mt-12 hidden">
-            <h3 class="text-2xl font-black text-slate-800 mb-6 uppercase tracking-tighter border-l-8 border-emerald-500 pl-4">PLAN D'AMORTISSEMENT</h3>
+            <h3 id="tableTitle" class="text-2xl font-black text-slate-800 mb-6 uppercase tracking-tighter border-l-8 border-emerald-500 pl-4">PLAN D'AMORTISSEMENT</h3>
             <div class="overflow-x-auto rounded-xl border-2 border-slate-800 bg-white shadow-2xl">
                 <table class="w-full text-left border-collapse text-sm">
                     <thead class="bg-slate-800 text-white text-[10px] uppercase tracking-tighter text-center">
@@ -142,27 +145,63 @@
                     <tbody id="corpsTableau" class="font-bold text-slate-700"></tbody>
                 </table>
             </div>
-            <div id="resultatCession" class="mt-6 p-6 bg-slate-900 text-white rounded-2xl hidden shadow-xl border-l-8 border-red-500"></div>
+            <div id="resultatCession" class="mt-6 p-6 bg-slate-900 text-white rounded-2xl hidden shadow-xl border-l-8 border-blue-500"></div>
         </div>
     </div>
 
     <script>
-        // --- LOGIQUE REACTIVE SOCLE ---
-        const inputs = ['dateAcq', 'dateService', 'montantHT', 'isVehicule', 'valeurResiduelle', 'typeEco', 'dureeEco', 'dureeFisc'];
-        inputs.forEach(id => {
-            document.getElementById(id).addEventListener('input', (e) => {
+        // --- LOGIQUE RÉACTIVE ---
+        const ids = ['dateAcq', 'dateService', 'montantHT', 'isVehicule', 'valeurResiduelle', 'typeEco', 'dureeEco', 'dureeFisc', 'bilanDebut', 'bilanFin'];
+        ids.forEach(id => {
+            const el = document.getElementById(id);
+            el.addEventListener('input', (e) => {
                 if(id === 'dateAcq') {
                     const d = e.target.value;
                     document.getElementById('dateService').value = d;
-                    const y = new Date(d).getFullYear();
-                    document.getElementById('bilanDebut').value = `${y}-01-01`;
-                    document.getElementById('bilanFin').value = `${y}-12-31`;
+                    const date = new Date(d);
+                    if(!isNaN(date.getTime())){
+                        document.getElementById('bilanDebut').value = `${date.getFullYear()}-01-01`;
+                        document.getElementById('bilanFin').value = `${date.getFullYear()}-12-31`;
+                    }
+                }
+                if(id === 'bilanDebut') {
+                    const debut = new Date(el.value);
+                    if(!isNaN(debut.getTime())){
+                        const fin = new Date(debut);
+                        fin.setFullYear(fin.getFullYear() + 1);
+                        fin.setDate(fin.getDate() - 1);
+                        document.getElementById('bilanFin').value = fin.toISOString().split('T')[0];
+                    }
                 }
                 if(id === 'valeurResiduelle' && parseFloat(e.target.value) > 0) toggleFiscal(true);
                 if(id === 'typeEco' || id === 'dureeEco') handleVariableUI();
+                validerDates();
                 calculerBase();
             });
         });
+
+        function validerDates() {
+            const alertBox = document.getElementById('dateAlert');
+            const debut = new Date(getV('bilanDebut'));
+            const fin = new Date(getV('bilanFin'));
+            alertBox.classList.add('hidden');
+
+            if(!isNaN(debut.getTime()) && !isNaN(fin.getTime())) {
+                if(fin <= debut) {
+                    alertBox.innerText = "❌ ERREUR : La date de fin doit être supérieure à la date de début.";
+                    alertBox.className = "mb-4 p-3 rounded-lg text-xs font-bold bg-red-100 text-red-700 border border-red-200";
+                    alertBox.classList.remove('hidden');
+                    return false;
+                }
+                const diffMois = (fin - debut) / (1000 * 60 * 60 * 24 * 30.44);
+                if(diffMois < 11.5 || diffMois > 12.5) {
+                    alertBox.innerText = "⚠️ ATTENTION : L'exercice ne dure pas 12 mois (Exercice décalé, court ou long).";
+                    alertBox.className = "mb-4 p-3 rounded-lg text-xs font-bold alert-orange border border-orange-200";
+                    alertBox.classList.remove('hidden');
+                }
+            }
+            return true;
+        }
 
         function toggleFiscal(forceOpen = false) {
             const content = document.getElementById('fiscContent');
@@ -170,6 +209,8 @@
             else content.classList.toggle('active');
             document.getElementById('fiscArrow').innerText = content.classList.contains('active') ? "➖" : "➕";
         }
+
+        function toggleSection(id) { document.getElementById(id).classList.toggle('active'); }
 
         function handleVariableUI() {
             const mode = document.getElementById('typeEco').value;
@@ -189,11 +230,12 @@
             document.getElementById('varTotal').innerText = total;
         }
 
+        function getV(id) { return document.getElementById(id).value; }
         function formatC(v) { return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(v); }
 
         function calculerBase() {
-            const mt = parseFloat(document.getElementById('montantHT').value) || 0;
-            const vr = parseFloat(document.getElementById('valeurResiduelle').value) || 0;
+            const mt = parseFloat(getV('montantHT')) || 0;
+            const vr = parseFloat(getV('valeurResiduelle')) || 0;
             const base = (document.getElementById('isVehicule').checked ? mt * 1.2 : mt) - vr;
             document.getElementById('resultatBase').innerText = formatC(base);
             return base;
@@ -205,55 +247,58 @@
             return (year2 - year1) * 360 + (month2 - month1) * 30 + (day2 - day1) + 1;
         }
 
-        // --- MOTEUR DE CALCUL V11 ---
+        // --- MOTEUR DE CALCUL V12 ---
         function genererTableau() {
-            const mtHT = parseFloat(document.getElementById('montantHT').value) || 0;
-            const vr = parseFloat(document.getElementById('valeurResiduelle').value) || 0;
+            if(!validerDates()) return;
+            const durF = parseInt(getV('dureeFisc'));
+            if(getV('typeFisc') === 'degressif' && durF < 3) return alert("❌ ERREUR FISCALE : L'amortissement dégressif n'est autorisé que pour une durée ≥ 3 ans.");
+
+            const mtHT = parseFloat(getV('montantHT')) || 0;
+            const vr = parseFloat(getV('valeurResiduelle')) || 0;
             const isTVA = document.getElementById('isVehicule').checked;
             const baseE = (isTVA ? mtHT * 1.2 : mtHT) - vr;
             const baseF = (isTVA ? mtHT * 1.2 : mtHT);
             
-            const dAcq = new Date(document.getElementById('dateAcq').value);
-            const dServ = new Date(document.getElementById('dateService').value);
-            const dCession = new Date(document.getElementById('dateCession').value);
-            const bT = document.getElementById('baseJours').value;
-            const durE = parseInt(document.getElementById('dureeEco').value);
-            const durF = parseInt(document.getElementById('dureeFisc').value);
-            const modeE = document.getElementById('typeEco').value;
-            const modeF = document.getElementById('typeFisc').value;
+            const dAcq = new Date(getV('dateAcq'));
+            const dServ = new Date(getV('dateService'));
+            const dCess = new Date(getV('dateCession'));
+            const bT = getV('baseJours');
+            const durE = parseInt(getV('dureeEco'));
+            const modeE = getV('typeEco'), modeF = getV('typeFisc');
+            const bDebut = new Date(getV('bilanDebut'));
+            const bFin = new Date(getV('bilanFin'));
 
             if (isNaN(dServ.getTime())) return alert("Date de mise en service obligatoire");
 
+            const isCession = !isNaN(dCess.getTime());
+            document.getElementById('tableTitle').innerText = isCession ? "PLAN D'AMORTISSEMENT DE L'IMMOBILISATION CÉDÉE" : "PLAN D'AMORTISSEMENT";
             document.getElementById('zoneTableau').classList.remove('hidden');
             const corps = document.getElementById('corpsTableau');
             corps.innerHTML = "";
 
-            let cE = 0, cF = 0, cD = 0, y = dServ.getFullYear();
+            let cE = 0, cF = 0, cD = 0;
             const coeffE = (durE <= 4) ? 1.25 : (durE <= 6 ? 1.75 : 2.25);
             const coeffF = (durF <= 4) ? 1.25 : (durF <= 6 ? 1.75 : 2.25);
 
             const varInputs = document.querySelectorAll('.var-input');
             let units = []; varInputs.forEach(i => units.push(parseFloat(i.value) || 0));
-            const totU = units.reduce((a,b) => a+b, 0);
+            const totU = units.reduce((a, b) => a + b, 0);
 
             for (let i = 0; i < 50; i++) {
-                let currY = y + i;
+                let currDebut = new Date(bDebut); currDebut.setFullYear(currDebut.getFullYear() + i);
+                let currFin = new Date(bFin); currFin.setFullYear(currFin.getFullYear() + i);
                 let dotE = 0, dotF = 0;
-                let debutEx = new Date(currY, 0, 1), finEx = new Date(currY, 11, 31);
-                
-                // Si cession dans l'année
-                let aCession = false;
-                if (!isNaN(dCession.getTime()) && dCession.getFullYear() === currY) {
-                    finEx = dCession;
-                    aCession = true;
-                }
+                let anneeSortie = false;
 
-                // --- CALCUL ÉCO ---
+                if (isCession && dCess < currFin) { currFin = dCess; anneeSortie = true; }
+
+                // --- ÉCONOMIQUE ---
                 if (cE < (baseE - 0.01)) {
                     if (modeE === "variable" && i < durE) {
                         dotE = baseE * (units[i] / totU);
                     } else if (modeE === "lineaire") {
-                        let js = (bT === "360") ? getJ360(i === 0 ? dServ : debutEx, finEx) : Math.floor((finEx - (i === 0 ? dServ : debutEx)) / 86400000) + 1;
+                        let debutCalcul = (i === 0) ? dServ : currDebut;
+                        let js = (bT === "360") ? getJ360(debutCalcul, currFin) : Math.floor((currFin - debutCalcul) / 86400000) + 1;
                         dotE = (baseE / durE) * (js / (bT === "360" ? 360 : 365));
                     } else if (modeE === "degressif") {
                         let tD = (1 / durE) * coeffE;
@@ -265,15 +310,18 @@
                     }
                 }
 
-                // --- CALCUL FISCAL ---
+                // --- FISCAL ---
                 if (cF < (baseF - 0.01)) {
                     if (modeF === "lineaire") {
-                        let js = (bT === "360") ? getJ360(i === 0 ? dServ : debutEx, finEx) : Math.floor((finEx - (i === 0 ? dServ : debutEx)) / 86400000) + 1;
+                        let debutCalcul = (i === 0) ? dServ : currDebut;
+                        let js = (bT === "360") ? getJ360(debutCalcul, currFin) : Math.floor((currFin - debutCalcul) / 86400000) + 1;
                         dotF = (baseF / durF) * (js / (bT === "360" ? 360 : 365));
                     } else if (modeF === "degressif" && i < durF) {
                         let tD = (1 / durF) * coeffF;
                         if (i === 0) dotF = baseF * tD * ((13 - (dAcq.getMonth() + 1)) / 12);
-                        else {
+                        else if (anneeSortie) {
+                            dotF = ((baseF - cF) * tD / 12) * (dCess.getMonth()); // Mois précédant la cession
+                        } else {
                             let tL = 1 / (durF - i);
                             dotF = (tD > tL) ? (baseF - cF) * tD : (baseF - cF) / (durF - i);
                         }
@@ -288,8 +336,8 @@
                 cE += dotE; cF += dotF; cD += derog;
 
                 corps.innerHTML += `
-                    <tr class="divide-x divide-slate-200 border-b ${aCession ? 'bg-red-50' : ''}">
-                        <td class="p-3 text-center bg-slate-50 font-black">${currY}${aCession ? ' (Cession)' : ''}</td>
+                    <tr class="divide-x divide-slate-100 border-b ${anneeSortie ? 'bg-amber-50' : ''}">
+                        <td class="p-3 text-center bg-slate-50 font-black">${currFin.getFullYear()}${anneeSortie ? ' (Sortie)' : ''}</td>
                         <td class="text-right text-emerald-600 font-numeric">${formatC(dotE)}</td>
                         <td class="text-right text-[10px] text-slate-400 font-numeric">${formatC(cE)}</td>
                         <td class="text-right text-blue-600 font-numeric">${formatC(dotF)}</td>
@@ -300,18 +348,17 @@
                         <td class="text-right bg-slate-50 text-slate-900 font-numeric">${formatC((baseE + vr) - cE)}</td>
                     </tr>`;
                 
-                if (aCession) {
-                    const prixC = parseFloat(document.getElementById('prixCession').value) || 0;
+                if (anneeSortie) {
+                    const prixC = parseFloat(getV('prixCession')) || 0;
                     const vnc = (baseE + vr) - cE;
                     const pvmv = prixC - vnc;
                     const resDiv = document.getElementById('resultatCession');
                     resDiv.classList.remove('hidden');
-                    resDiv.innerHTML = `
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                            <div><span class="text-[10px] uppercase text-slate-400 font-black">VNC à la cession</span><div class="text-2xl font-black">${formatC(vnc)}</div></div>
-                            <div><span class="text-[10px] uppercase text-slate-400 font-black">Prix de Cession HT</span><div class="text-2xl font-black">${formatC(prixC)}</div></div>
-                            <div><span class="text-[10px] uppercase text-slate-400 font-black">${pvmv >=0 ? 'Plus-Value' : 'Moins-Value'}</span><div class="text-2xl font-black ${pvmv>=0 ? 'text-emerald-400' : 'text-red-400'}">${formatC(pvmv)}</div></div>
-                        </div>`;
+                    resDiv.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                        <div><span class="text-[10px] uppercase text-slate-400 font-black tracking-widest">Valeur Nette (VNC)</span><div class="text-2xl font-black">${formatC(vnc)}</div></div>
+                        <div><span class="text-[10px] uppercase text-slate-400 font-black tracking-widest">Prix de Vente</span><div class="text-2xl font-black text-blue-400">${formatC(prixC)}</div></div>
+                        <div><span class="text-[10px] uppercase text-slate-400 font-black tracking-widest font-black">${pvmv >= 0 ? 'Plus-Value' : 'Moins-Value'}</span><div class="text-2xl font-black ${pvmv >= 0 ? 'text-emerald-400' : 'text-red-500'}">${formatC(pvmv)}</div></div>
+                    </div>`;
                     break;
                 }
             }
