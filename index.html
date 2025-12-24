@@ -3,87 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expert-Amort PRO - V9 Final</title>
+    <title>Expert-Amort PRO - V10</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
         .collapsible-content.active { max-height: 2000px; }
-        th, td { border: 1px solid #cbd5e1; padding: 12px !important; }
-        .font-numeric { font-family: 'Courier New', Courier, monospace; }
+        /* Style des traits blancs pour les titres */
+        .th-main { border-right: 2px solid white !important; border-bottom: 2px solid white !important; }
+        .th-sub { border-right: 1px solid white !important; }
+        th, td { border: 1px solid #e2e8f0; padding: 10px !important; }
+        .font-numeric { font-family: 'Courier New', Courier, monospace; font-weight: 700; }
     </style>
 </head>
 <body class="bg-slate-50 p-6 font-sans text-slate-800">
 
     <div class="max-w-6xl mx-auto pb-24">
-        <header class="mb-8 text-center">
+        <header class="mb-8 text-center border-b-2 border-slate-200 pb-4">
             <h1 class="text-4xl font-black text-slate-900 italic uppercase">Expert-Amort <span class="text-emerald-600 tracking-tighter">PRO</span></h1>
-            <p class="text-slate-500 font-medium italic">Logiciel de simulation comptable et fiscale</p>
+            <p class="text-slate-500 font-bold">Plan d'Amortissement Multi-Régimes</p>
         </header>
 
-        <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+        <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6 font-bold">
             <div class="flex items-center gap-3 mb-6 border-b pb-4 text-blue-700">
                 <span class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold">1</span>
-                <h2 class="text-xl font-bold uppercase tracking-tight">Données de l'Investissement</h2>
+                <h2 class="text-xl font-bold uppercase tracking-tight">Investissement</h2>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-[10px] font-black text-slate-400 uppercase">Date Acquisition</label>
-                            <input type="date" id="dateAcq" class="w-full border p-2 rounded-lg text-sm bg-slate-50">
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-black text-slate-400 uppercase">Mise en service</label>
-                            <input type="date" id="dateService" class="w-full border p-2 rounded-lg text-sm">
-                        </div>
+                        <div><label class="text-[10px] uppercase text-slate-400">Acquisition</label><input type="date" id="dateAcq" class="w-full border p-2 rounded-lg text-sm bg-slate-50"></div>
+                        <div><label class="text-[10px] uppercase text-slate-400">Mise en service</label><input type="date" id="dateService" class="w-full border p-2 rounded-lg text-sm"></div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4 bg-blue-50/50 p-4 rounded-xl border border-blue-100">
-                        <div>
-                            <label class="text-[9px] font-black text-blue-400 uppercase">Début Exercice</label>
-                            <input type="date" id="bilanDebut" class="w-full border p-1 rounded text-xs">
-                        </div>
-                        <div>
-                            <label class="text-[9px] font-black text-blue-400 uppercase">Fin Exercice</label>
-                            <input type="date" id="bilanFin" class="w-full border p-1 rounded text-xs">
-                        </div>
+                    <div class="grid grid-cols-2 gap-4 bg-blue-50 p-4 rounded-xl border border-blue-100">
+                        <div><label class="text-[9px] text-blue-400 uppercase">Début Exercice</label><input type="date" id="bilanDebut" class="w-full border p-1 rounded text-xs bg-white"></div>
+                        <div><label class="text-[9px] text-blue-400 uppercase">Fin Exercice</label><input type="date" id="bilanFin" class="w-full border p-1 rounded text-xs bg-white"></div>
                     </div>
                 </div>
-
                 <div class="space-y-4">
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase">Valeur d'acquisition HT</label>
-                        <input type="number" id="montantHT" placeholder="0.00" class="w-full border-2 p-3 rounded-xl text-2xl font-black text-blue-800 border-blue-50 shadow-inner">
+                    <div><label class="text-[10px] uppercase text-slate-400">Valeur d'acquisition HT</label><input type="number" id="montantHT" class="w-full border-2 p-3 rounded-xl text-2xl font-black text-blue-800 border-blue-50"></div>
+                    <div class="flex items-center gap-3 p-3 bg-blue-600 text-white rounded-xl shadow-lg">
+                        <input type="checkbox" id="isVehicule" class="w-5 h-5"><label for="isVehicule" class="text-xs uppercase">Véhicule de Tourisme (+TVA)</label>
                     </div>
-                    <div class="flex items-center gap-3 p-3 bg-blue-600 text-white rounded-xl">
-                        <input type="checkbox" id="isVehicule" class="w-5 h-5 cursor-pointer">
-                        <label for="isVehicule" class="text-xs font-bold uppercase tracking-tighter">Véhicule de Tourisme (TVA non récupérable 20%)</label>
-                    </div>
-                    <div class="flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-xl">
-                        <span class="text-[10px] font-black text-slate-500 uppercase italic">Valeur Résiduelle (VR)</span>
-                        <input type="number" id="valeurResiduelle" value="0" class="w-32 border p-2 rounded-lg text-right font-black text-red-600">
+                    <div class="flex items-center justify-between p-3 bg-slate-100 rounded-xl border">
+                        <span class="text-[10px] uppercase italic">Valeur Résiduelle (VR)</span>
+                        <input type="number" id="valeurResiduelle" value="0" class="w-32 border p-2 rounded-lg text-right font-black text-red-600 bg-white">
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+        <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6 font-bold">
             <div class="flex items-center gap-3 mb-6 border-b pb-4 text-emerald-700">
                 <span class="bg-emerald-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold">2</span>
                 <h2 class="text-xl font-bold uppercase tracking-tight">Méthodes & Base de temps</h2>
             </div>
 
-            <div class="mb-8 p-3 bg-slate-800 text-white rounded-xl flex gap-6 items-center justify-center">
-                <span class="text-[10px] font-black tracking-widest uppercase text-slate-400 italic">Base Prorata :</span>
-                <select id="baseJours" class="bg-slate-700 p-2 rounded-lg text-xs font-bold border-none outline-none cursor-pointer">
+            <div class="mb-8 p-3 bg-slate-800 text-white rounded-xl flex gap-6 items-center justify-center shadow-lg">
+                <span class="text-[10px] tracking-widest uppercase text-slate-400 italic font-black">Base Prorata :</span>
+                <select id="baseJours" class="bg-slate-700 p-2 rounded-lg text-xs font-bold border-none">
                     <option value="360">360 jours (Méthode Comptable - 30j/mois)</option>
                     <option value="365">365 jours (Méthode Réelle - Calendaire)</option>
                 </select>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="p-5 bg-emerald-50 rounded-2xl border border-emerald-200 shadow-sm">
-                    <h3 class="text-xs font-black text-emerald-800 mb-4 uppercase italic underline">📊 Amortissement Économique</h3>
+                <div class="p-5 bg-emerald-50 rounded-2xl border border-emerald-200">
+                    <h3 class="text-xs font-black text-emerald-800 mb-4 uppercase italic underline">📊 Économique (Comptable)</h3>
                     <div class="space-y-4">
                         <select id="typeEco" class="w-full border p-3 rounded-xl text-sm font-bold bg-white cursor-pointer">
                             <option value="lineaire">Linéaire</option>
@@ -92,31 +78,16 @@
                         </select>
                         <div class="flex justify-between items-center bg-white p-3 rounded-xl border">
                             <span class="text-xs font-bold text-slate-600 uppercase">Durée d'usage</span>
-                            <div class="flex items-center gap-2">
-                                <input type="number" id="dureeEco" value="5" class="w-16 border p-1 rounded text-center font-black text-emerald-600">
-                                <span class="text-xs font-bold text-slate-400">ans</span>
-                            </div>
+                            <input type="number" id="dureeEco" value="5" class="w-16 border p-1 rounded text-center font-black text-emerald-600">
                         </div>
                     </div>
                 </div>
-
                 <div class="relative">
-                    <button onclick="toggleFiscal()" class="w-full flex justify-between p-5 bg-blue-50 border border-blue-200 rounded-2xl font-black text-xs uppercase text-blue-700 hover:bg-blue-100 transition-all">
-                        ⚖️ Option Fiscal & Dérogatoire <span id="fiscArrow">➕</span>
-                    </button>
+                    <button onclick="toggleFiscal()" class="w-full flex justify-between p-5 bg-blue-50 border border-blue-200 rounded-2xl font-black text-xs uppercase text-blue-700 hover:bg-blue-100 transition-all">⚖️ Option Fiscal & Dérogatoire <span id="fiscArrow">➕</span></button>
                     <div id="fiscContent" class="collapsible-content">
                         <div class="mt-3 p-5 bg-white rounded-2xl border-2 border-blue-100 shadow-xl space-y-4">
-                            <select id="typeFisc" class="w-full border p-3 rounded-xl text-sm font-bold bg-white">
-                                <option value="lineaire">Linéaire</option>
-                                <option value="degressif" selected>Dégressif</option>
-                            </select>
-                            <div class="flex justify-between items-center bg-blue-50 p-3 rounded-xl border">
-                                <span class="text-xs font-bold text-blue-800 uppercase">Durée Fiscale</span>
-                                <div class="flex items-center gap-2">
-                                    <input type="number" id="dureeFisc" value="5" class="w-16 border p-1 rounded text-center font-black text-blue-600">
-                                    <span class="text-xs font-bold text-slate-400">ans</span>
-                                </div>
-                            </div>
+                            <select id="typeFisc" class="w-full border p-3 rounded-xl text-sm font-bold bg-white"><option value="lineaire">Linéaire</option><option value="degressif" selected>Dégressif</option></select>
+                            <div class="flex justify-between items-center bg-blue-50 p-3 rounded-xl border"><span class="text-xs font-bold text-blue-800 uppercase">Durée Fiscale</span><input type="number" id="dureeFisc" value="5" class="w-16 border p-1 rounded text-center font-black text-blue-600"></div>
                         </div>
                     </div>
                 </div>
@@ -125,51 +96,31 @@
             <div id="varContent" class="hidden mt-8 p-6 bg-amber-50 rounded-2xl border-2 border-dashed border-amber-300">
                 <h3 class="text-xs font-black text-amber-800 mb-4 uppercase tracking-widest">Saisie des Unités d'œuvre</h3>
                 <div id="varGrid" class="grid grid-cols-2 md:grid-cols-5 gap-4"></div>
-                <div class="mt-6 p-4 bg-amber-800 text-white rounded-xl text-right font-black uppercase text-sm tracking-widest">
-                    Production Totale : <span id="varTotal">0</span>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-8">
-            <button onclick="toggleSection('cessionContent')" class="w-full flex items-center justify-between bg-white p-5 rounded-2xl shadow-sm border border-slate-200 hover:bg-slate-50 transition-all">
-                <div class="flex items-center gap-3 text-slate-700">
-                    <span class="bg-slate-300 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold">3</span>
-                    <h2 class="text-xl font-bold uppercase tracking-tight text-slate-400">Données de Cession</h2>
-                </div>
-                <span class="text-slate-400">➕</span>
-            </button>
-            <div id="cessionContent" class="collapsible-content bg-white border-x border-b border-slate-200 rounded-b-2xl mx-2 shadow-inner">
-                <div class="p-6">
-                    <label class="block text-xs font-black text-red-600 mb-2 uppercase italic">Date de sortie de l'actif (cession)</label>
-                    <input type="date" id="dateCession" class="w-full md:w-1/3 border-2 border-red-50 p-2 rounded-xl focus:border-red-500">
-                </div>
+                <div class="mt-6 p-4 bg-amber-800 text-white rounded-xl text-right font-black uppercase text-sm tracking-widest">Production Totale : <span id="varTotal">0</span></div>
             </div>
         </section>
 
         <div class="bg-slate-900 text-white p-6 rounded-3xl shadow-2xl flex flex-col md:flex-row justify-between items-center gap-6 sticky bottom-4 z-50 border-t-4 border-emerald-500">
-            <div>
-                <span class="text-slate-500 text-[10px] uppercase font-black tracking-widest italic">BASE AMORT. ECO (VO - VR)</span>
-                <div id="resultatBase" class="text-4xl font-black text-emerald-400 tracking-tighter">0,00 €</div>
-            </div>
-            <button onclick="genererTableau()" class="w-full md:w-auto bg-emerald-600 hover:bg-emerald-500 text-white px-16 py-5 rounded-2xl font-black uppercase text-xl shadow-lg transition-transform active:scale-95">Générer le Tableau</button>
+            <div><span class="text-slate-500 text-[10px] uppercase font-black tracking-widest italic">BASE AMORT. ECO (VO - VR)</span><div id="resultatBase" class="text-4xl font-black text-emerald-400 tracking-tighter">0,00 €</div></div>
+            <button onclick="genererTableau()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-16 py-5 rounded-2xl font-black uppercase text-xl shadow-lg transition-transform active:scale-95">Calculer le plan</button>
         </div>
 
         <div id="zoneTableau" class="mt-12 hidden">
-            <div class="overflow-x-auto rounded-2xl border border-slate-300 bg-white shadow-2xl">
+            <h3 class="text-2xl font-black text-slate-800 mb-6 uppercase tracking-tighter border-l-8 border-emerald-500 pl-4">Plan d'amortissement</h3>
+            <div class="overflow-x-auto rounded-xl border-2 border-slate-800 bg-white shadow-2xl">
                 <table class="w-full text-left border-collapse text-sm">
                     <thead class="bg-slate-800 text-white text-[10px] uppercase tracking-tighter text-center">
-                        <tr class="divide-x divide-slate-700">
-                            <th rowspan="2" class="p-4">Exercice</th>
-                            <th colspan="2" class="bg-emerald-900/50">Économique</th>
-                            <th colspan="2" class="bg-blue-900/50">Fiscal</th>
-                            <th colspan="3" class="bg-slate-700">Dérogatoire</th>
-                            <th rowspan="2" class="bg-slate-900 text-emerald-400">VNC Eco</th>
+                        <tr>
+                            <th rowspan="2" class="p-4 border-r-2 border-white">Exercice</th>
+                            <th colspan="2" class="bg-emerald-900/80 th-main">Économique</th>
+                            <th colspan="2" class="bg-blue-900/80 th-main">Fiscal</th>
+                            <th colspan="3" class="bg-slate-700 th-main">Dérogatoire</th>
+                            <th rowspan="2" class="bg-slate-900 text-emerald-400 border-white">VNC Eco</th>
                         </tr>
-                        <tr class="divide-x divide-slate-600 bg-slate-700/50">
-                            <th>Dotation</th><th class="text-slate-400">Cumul</th>
-                            <th>Dotation</th><th class="text-slate-400">Cumul</th>
-                            <th class="text-blue-300">Dotation (D)</th><th class="text-orange-300">Reprise (R)</th><th class="text-slate-400">Cumul</th>
+                        <tr class="bg-slate-700/80">
+                            <th class="p-2 th-sub">Dotation</th><th class="p-2 th-sub text-slate-400">Cumul</th>
+                            <th class="p-2 th-sub">Dotation</th><th class="p-2 th-sub text-slate-400">Cumul</th>
+                            <th class="p-2 th-sub text-blue-300">Dotation (D)</th><th class="p-2 th-sub text-orange-300">Reprise (R)</th><th class="p-2 th-sub text-slate-400">Cumul</th>
                         </tr>
                     </thead>
                     <tbody id="corpsTableau" class="font-bold text-slate-700"></tbody>
@@ -179,19 +130,18 @@
     </div>
 
     <script>
-        // --- LOGIQUE REACTIVE ---
-        const ids = ['dateAcq', 'dateService', 'montantHT', 'isVehicule', 'valeurResiduelle', 'typeEco', 'dureeEco', 'dureeFisc'];
-        ids.forEach(id => {
-            const el = document.getElementById(id);
-            el.addEventListener('input', () => {
+        // --- RÉACTIVITÉ ---
+        const inputs = ['dateAcq', 'dateService', 'montantHT', 'isVehicule', 'valeurResiduelle', 'typeEco', 'dureeEco', 'dureeFisc'];
+        inputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', (e) => {
                 if(id === 'dateAcq') {
-                    const d = el.value;
+                    const d = e.target.value;
                     document.getElementById('dateService').value = d;
                     const y = new Date(d).getFullYear();
                     document.getElementById('bilanDebut').value = `${y}-01-01`;
                     document.getElementById('bilanFin').value = `${y}-12-31`;
                 }
-                if(id === 'valeurResiduelle' && parseFloat(el.value) > 0) toggleFiscal(true);
+                if(id === 'valeurResiduelle' && parseFloat(e.target.value) > 0) toggleFiscal(true);
                 if(id === 'typeEco' || id === 'dureeEco') handleVariableUI();
                 calculerBase();
             });
@@ -204,20 +154,15 @@
             document.getElementById('fiscArrow').innerText = content.classList.contains('active') ? "➖" : "➕";
         }
 
-        function toggleSection(id) { document.getElementById(id).classList.toggle('active'); }
-
         function handleVariableUI() {
             const mode = document.getElementById('typeEco').value;
             const container = document.getElementById('varContent');
             const grid = document.getElementById('varGrid');
             const duree = parseInt(document.getElementById('dureeEco').value) || 0;
-
             if (mode === 'variable') {
                 container.classList.remove('hidden');
                 grid.innerHTML = "";
-                for(let i=1; i<=duree; i++) {
-                    grid.innerHTML += `<div><label class="text-[9px] font-black uppercase">Année ${i}</label><input type="number" class="var-input w-full border p-2 rounded-lg font-bold" value="0" oninput="updateVarTotal()"></div>`;
-                }
+                for(let i=1; i<=duree; i++) grid.innerHTML += `<div><label class="text-[9px] font-black uppercase">Année ${i}</label><input type="number" class="var-input w-full border p-2 rounded-lg font-bold" value="0" oninput="updateVarTotal()"></div>`;
             } else container.classList.add('hidden');
         }
 
@@ -243,13 +188,14 @@
             return (year2 - year1) * 360 + (month2 - month1) * 30 + (day2 - day1) + 1;
         }
 
-        // --- MOTEUR DE CALCUL ---
+        // --- MOTEUR V10 ---
         function genererTableau() {
             const mtHT = parseFloat(document.getElementById('montantHT').value) || 0;
             const vr = parseFloat(document.getElementById('valeurResiduelle').value) || 0;
             const isTVA = document.getElementById('isVehicule').checked;
             const baseE = (isTVA ? mtHT * 1.2 : mtHT) - vr;
             const baseF = (isTVA ? mtHT * 1.2 : mtHT);
+            
             const dAcq = new Date(document.getElementById('dateAcq').value);
             const dServ = new Date(document.getElementById('dateService').value);
             const bT = document.getElementById('baseJours').value;
@@ -258,7 +204,7 @@
             const modeE = document.getElementById('typeEco').value;
             const modeF = document.getElementById('typeFisc').value;
 
-            if (isNaN(dServ.getTime())) return alert("Saisissez une date de mise en service.");
+            if (isNaN(dServ.getTime())) return alert("Date de mise en service obligatoire");
 
             document.getElementById('zoneTableau').classList.remove('hidden');
             const corps = document.getElementById('corpsTableau');
@@ -272,7 +218,8 @@
             let units = []; varInputs.forEach(i => units.push(parseFloat(i.value) || 0));
             const totU = units.reduce((a,b) => a+b, 0);
 
-            for (let i = 0; i < Math.max(durE + 2, durF + 1); i++) {
+            // Boucle étendue : on continue tant qu'un des deux amortissements n'est pas fini
+            for (let i = 0; i < 50; i++) { // Sécurité max 50 ans
                 let currY = y + i;
                 let dotE = 0, dotF = 0;
 
@@ -287,8 +234,8 @@
                         let tD = (1 / durE) * coeffE;
                         if (i === 0) dotE = baseE * tD * ((12 - dServ.getMonth()) / 12);
                         else {
-                            let tL = 1 / (durE - i + 1);
-                            dotE = (tD > tL) ? (baseE - cE) * tD : (baseE - cE) / (durE - i + 1);
+                            let tL = 1 / (durE - i);
+                            dotE = (tD > tL) ? (baseE - cE) * tD : (baseE - cE) / (durE - i);
                         }
                     } else if (modeE === "variable" && totU > 0 && i < durE) {
                         dotE = baseE * (units[i] / totU);
@@ -296,15 +243,15 @@
                 }
 
                 // --- FISCAL ---
-                if (cF < (baseF - 0.01) && i < durF) {
-                    if (modeF === "degressif") {
+                if (cF < (baseF - 0.01)) {
+                    if (modeF === "degressif" && i < durF) {
                         let tD = (1 / durF) * coeffF;
                         if (i === 0) dotF = baseF * tD * ((12 - dAcq.getMonth()) / 12);
                         else {
                             let tL = 1 / (durF - i);
                             dotF = (tD > tL) ? (baseF - cF) * tD : (baseF - cF) / (durF - i);
                         }
-                    } else {
+                    } else if (modeF === "lineaire") {
                         if (i === 0) {
                             let js = (bT === "360") ? getJ360(dServ, new Date(currY, 11, 30)) : Math.floor((new Date(currY, 11, 31) - dServ) / 86400000) + 1;
                             dotF = (baseF / durF) * (js / (bT === "360" ? 360 : 365));
@@ -315,12 +262,13 @@
                 dotE = Math.min(dotE, baseE - cE);
                 dotF = Math.min(dotF, baseF - cF);
                 let derog = dotF - dotE;
+
                 if (dotE <= 0 && dotF <= 0 && i > 0) break;
 
                 cE += dotE; cF += dotF; cD += derog;
 
                 corps.innerHTML += `
-                    <tr class="divide-x divide-slate-100 border-b hover:bg-slate-50">
+                    <tr class="divide-x divide-slate-200 border-b">
                         <td class="p-3 text-center bg-slate-50 font-black">${currY}</td>
                         <td class="text-right text-emerald-600 font-numeric">${formatC(dotE)}</td>
                         <td class="text-right text-[10px] text-slate-400 font-numeric">${formatC(cE)}</td>
