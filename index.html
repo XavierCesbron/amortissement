@@ -6,16 +6,17 @@
     <title>Expert-Amort PRO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 1000px 0.3s ease-out; }
         .collapsible-content.active { max-height: 1000px; }
+        th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
     </style>
 </head>
 <body class="bg-slate-50 p-4 font-sans text-slate-800">
 
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-5xl mx-auto pb-20">
         <header class="mb-6 text-center">
-            <h1 class="text-3xl font-extrabold text-slate-900">Expert-Amort <span class="text-blue-600">PRO</span></h1>
-            <p class="text-slate-500 italic text-sm">Précision comptable & fiscale</p>
+            <h1 class="text-3xl font-extrabold text-slate-900">Expert-Amort <span class="text-emerald-600">PRO</span></h1>
+            <p class="text-slate-500 italic text-sm">Précision comptable & fiscale (Base 360/365)</p>
         </header>
 
         <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-4">
@@ -25,20 +26,22 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-2">
-                    <label class="block text-xs font-bold uppercase text-slate-400">Acquisition & Mise en service</label>
-                    <input type="date" id="dateAcq" class="w-full border p-2 rounded text-sm mb-2">
-                    <input type="date" id="dateService" class="w-full border p-2 rounded text-sm" placeholder="Mise en service">
-                    <div class="flex items-center gap-2 mt-3 p-2 bg-blue-50 rounded border border-blue-100">
-                        <input type="checkbox" id="isVehicule" class="w-4 h-4">
-                        <label for="isVehicule" class="text-xs text-blue-900 font-medium">Véhicule de tourisme (TVA +)</label>
+                    <label class="block text-xs font-bold uppercase text-slate-400">Calendrier</label>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex justify-between items-center"><span class="text-xs">Acquisition:</span><input type="date" id="dateAcq" class="border p-1 rounded text-sm"></div>
+                        <div class="flex justify-between items-center"><span class="text-xs">Mise en service:</span><input type="date" id="dateService" class="border p-1 rounded text-sm"></div>
                     </div>
                 </div>
                 <div class="space-y-2">
-                    <label class="block text-xs font-bold uppercase text-slate-400">Valeurs financières</label>
-                    <input type="number" id="montantHT" placeholder="Montant HT" class="w-full border p-2 rounded text-sm font-bold text-blue-700">
+                    <label class="block text-xs font-bold uppercase text-slate-400">Valeurs</label>
+                    <input type="number" id="montantHT" placeholder="Montant HT" class="w-full border p-2 rounded text-lg font-bold text-blue-700">
+                    <div class="flex items-center gap-2 p-2 bg-blue-50 rounded border border-blue-100">
+                        <input type="checkbox" id="isVehicule" class="w-4 h-4 text-blue-600">
+                        <label for="isVehicule" class="text-xs text-blue-900 font-medium leading-tight">Véhicule de tourisme (TVA incluse)</label>
+                    </div>
                     <div class="flex items-center gap-2">
-                        <span class="text-xs text-slate-500 w-1/3">Valeur Résid. :</span>
-                        <input type="number" id="valeurResiduelle" value="0" class="w-2/3 border p-2 rounded text-sm text-right">
+                        <span class="text-xs text-slate-500 w-1/3">Val. Résiduelle :</span>
+                        <input type="number" id="valeurResiduelle" value="0" class="w-2/3 border p-1 rounded text-right text-sm">
                     </div>
                 </div>
             </div>
@@ -51,116 +54,128 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="space-y-3 p-3 bg-slate-50 rounded-lg">
-                    <h3 class="text-sm font-bold text-emerald-700 underline uppercase">📊 Économique (Compta)</h3>
-                    <div>
-                        <label class="block text-[10px] font-bold">TYPE</label>
-                        <select id="typeEco" class="w-full border p-1 rounded text-sm">
-                            <option value="lineaire">Linéaire</option>
-                            <option value="degressif">Dégressif</option>
-                            <option value="variable">Variable (Unités d'œuvre)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold">DURÉE (années)</label>
-                        <input type="number" id="dureeEco" value="5" class="w-full border p-1 rounded text-sm">
-                    </div>
+                    <h3 class="text-xs font-bold text-emerald-700 uppercase">📊 Économique (Compta)</h3>
+                    <select id="typeEco" class="w-full border p-1 rounded text-sm"><option value="lineaire">Linéaire</option><option value="degressif">Dégressif</option></select>
+                    <div class="flex items-center gap-2"><span class="text-xs">Durée (ans):</span><input type="number" id="dureeEco" value="5" class="w-full border p-1 rounded text-sm"></div>
                 </div>
                 <div class="space-y-3 p-3 bg-slate-50 rounded-lg border-l-2 border-emerald-200">
-                    <h3 class="text-sm font-bold text-emerald-700 underline uppercase">⚖️ Fiscal</h3>
-                    <div>
-                        <label class="block text-[10px] font-bold">TYPE</label>
-                        <select id="typeFisc" class="w-full border p-1 rounded text-sm">
-                            <option value="lineaire">Linéaire</option>
-                            <option value="degressif" selected>Dégressif</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold">DURÉE (années)</label>
-                        <input type="number" id="dureeFisc" value="5" class="w-full border p-1 rounded text-sm">
-                    </div>
+                    <h3 class="text-xs font-bold text-emerald-700 uppercase">⚖️ Fiscal</h3>
+                    <select id="typeFisc" class="w-full border p-1 rounded text-sm"><option value="lineaire">Linéaire</option><option value="degressif" selected>Dégressif</option></select>
+                    <div class="flex items-center gap-2"><span class="text-xs">Durée (ans):</span><input type="number" id="dureeFisc" value="5" class="w-full border p-1 rounded text-sm"></div>
                 </div>
             </div>
         </section>
 
         <section class="mb-6">
-            <button onclick="toggleCession()" class="w-full flex items-center justify-between bg-white p-4 rounded-xl shadow-sm border border-slate-200 hover:bg-slate-50 transition-all">
-                <div class="flex items-center gap-2 text-slate-700">
-                    <span id="cessionBadge" class="bg-slate-300 text-white w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold">3</span>
-                    <h2 class="text-lg font-bold">Données de Cession <span class="text-xs font-normal text-slate-400 ml-2">(Optionnel)</span></h2>
-                </div>
-                <span id="cessionArrow" class="text-xl">➕</span>
+            <button onclick="toggleCession()" class="w-full flex items-center justify-between bg-white p-4 rounded-xl shadow-sm border border-slate-200 hover:bg-slate-50">
+                <div class="flex items-center gap-2 text-slate-700"><span id="cessionBadge" class="bg-slate-300 text-white w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold">3</span><h2 class="text-lg font-bold">Données de Cession <small class="text-slate-400 font-normal ml-2">(Optionnel)</small></h2></div>
+                <span id="cessionArrow">➕</span>
             </button>
-            <div id="cessionContent" class="collapsible-content bg-white border-x border-b border-slate-200 rounded-b-xl mx-2 shadow-inner">
-                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-red-700">DATE DE CESSION</label>
-                        <input type="date" id="dateCession" class="w-full border p-2 rounded text-sm border-red-100">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400">EXERCICE DE CESSION</label>
-                        <div class="flex gap-1">
-                            <input type="date" id="cessionBilanDebut" class="w-1/2 border p-1 rounded text-[10px] bg-gray-50">
-                            <input type="date" id="cessionBilanFin" class="w-1/2 border p-1 rounded text-[10px] bg-gray-50">
-                        </div>
-                    </div>
-                </div>
+            <div id="cessionContent" class="collapsible-content bg-white border-x border-b border-slate-200 rounded-b-xl mx-2">
+                <div class="p-4"><label class="block text-xs font-bold text-red-700 mb-1">DATE DE CESSION</label><input type="date" id="dateCession" class="w-full border p-2 rounded text-sm border-red-100"></div>
             </div>
         </section>
 
         <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="text-center md:text-left">
-                <span class="text-slate-400 text-[10px] uppercase font-bold tracking-widest">Base Amortissable</span>
-                <div id="resultatBase" class="text-3xl font-black">0,00 €</div>
+            <div><span class="text-slate-400 text-[10px] uppercase font-bold">Base Amortissable</span><div id="resultatBase" class="text-3xl font-black italic">0,00 €</div></div>
+            <button onclick="genererTableau()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-10 py-4 rounded-xl font-bold shadow-lg transition-all active:scale-95">Calculer le Tableau</button>
+        </div>
+
+        <div id="zoneTableau" class="mt-8 hidden">
+            <h3 class="text-xl font-bold mb-4 text-slate-800">Tableau d'Amortissement</h3>
+            <div class="overflow-x-auto rounded-lg border border-slate-200 bg-white">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-slate-800 text-white">
+                        <tr>
+                            <th class="p-3">Exercice</th>
+                            <th class="p-3">Base</th>
+                            <th class="p-3 text-right">Comptable</th>
+                            <th class="p-3 text-right">Fiscal</th>
+                            <th class="p-3 text-right bg-blue-900">Dérogatoire</th>
+                            <th class="p-3 text-right">Cumul Amort.</th>
+                            <th class="p-3 text-right">VNC</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpsTableau" class="divide-y divide-slate-100"></tbody>
+                </table>
             </div>
-            <button class="bg-emerald-600 hover:bg-emerald-500 text-white px-10 py-4 rounded-xl font-bold shadow-lg transition-transform active:scale-95">
-                Calculer le Tableau
-            </button>
         </div>
     </div>
 
     <script>
+        // --- LOGIQUE D'INTERFACE ---
         function toggleCession() {
             const content = document.getElementById('cessionContent');
-            const arrow = document.getElementById('cessionArrow');
             const badge = document.getElementById('cessionBadge');
             content.classList.toggle('active');
-            arrow.innerText = content.classList.contains('active') ? "➖" : "➕";
-            badge.className = content.classList.contains('active') ? 
-                "bg-red-500 text-white w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold" : 
-                "bg-slate-300 text-white w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold";
+            badge.classList.toggle('bg-red-500');
+            badge.classList.toggle('bg-slate-300');
         }
 
-        const dateAcq = document.getElementById('dateAcq');
-        const montantHT = document.getElementById('montantHT');
-        const isVehicule = document.getElementById('isVehicule');
-        const valRes = document.getElementById('valeurResiduelle');
-        const resultatBase = document.getElementById('resultatBase');
-        const dateCession = document.getElementById('dateCession');
-
-        dateAcq.addEventListener('change', (e) => {
-            const d = e.target.value;
-            if (!d) return;
-            document.getElementById('dateService').value = d;
+        document.getElementById('dateAcq').addEventListener('change', (e) => {
+            document.getElementById('dateService').value = e.target.value;
             calculerBase();
         });
 
-        dateCession.addEventListener('change', (e) => {
-            const d = e.target.value;
-            if (!d) return;
-            const year = new Date(d).getFullYear();
-            document.getElementById('cessionBilanDebut').value = `${year}-01-01`;
-            document.getElementById('cessionBilanFin').value = `${year}-12-31`;
-        });
+        function formatCur(val) { return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(val); }
 
         function calculerBase() {
-            let mtHT = parseFloat(montantHT.value) || 0;
-            let vr = parseFloat(valRes.value) || 0;
-            let tva = isVehicule.checked ? 1.20 : 1.00;
-            let base = (mtHT * tva) - vr;
-            resultatBase.innerText = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(base);
+            let mt = parseFloat(document.getElementById('montantHT').value) || 0;
+            let vr = parseFloat(document.getElementById('valeurResiduelle').value) || 0;
+            let base = (document.getElementById('isVehicule').checked ? mt * 1.2 : mt) - vr;
+            document.getElementById('resultatBase').innerText = formatCur(base);
+            return base;
         }
 
-        [montantHT, isVehicule, valRes].forEach(el => el.addEventListener('input', calculerBase));
+        // --- MOTEUR DE CALCUL ---
+        function genererTableau() {
+            const base = calculerBase();
+            const dateService = new Date(document.getElementById('dateService').value);
+            const dureeEco = parseInt(document.getElementById('dureeEco').value);
+            const dureeFisc = parseInt(document.getElementById('dureeFisc').value);
+            const dateCession = document.getElementById('dateCession').value ? new Date(document.getElementById('dateCession').value) : null;
+            
+            if (isNaN(dateService.getTime())) return alert("Veuillez saisir une date valide.");
+
+            const corps = document.getElementById('corpsTableau');
+            corps.innerHTML = "";
+            document.getElementById('zoneTableau').classList.remove('hidden');
+
+            let vnc = base + (parseFloat(document.getElementById('valeurResiduelle').value) || 0);
+            let cumulAmort = 0;
+            let currentYear = dateService.getFullYear();
+            
+            // Logique simplifiée pour l'exemple (Linéaire)
+            const dotationAnnuelle = base / dureeEco;
+            
+            // Calcul Prorata 1ère année (Compta)
+            const finAnnee = new Date(currentYear, 11, 31);
+            const diffJours = (finAnnee - dateService) / (1000 * 60 * 60 * 24) + 1;
+            let prorata1 = diffJours / 360; 
+
+            for (let i = 0; i <= dureeEco; i++) {
+                let exercice = currentYear + i;
+                let dotation = (i === 0) ? dotationAnnuelle * prorata1 : (i === dureeEco ? dotationAnnuelle * (1 - prorata1) : dotationAnnuelle);
+                
+                // On arrête si on dépasse la base
+                if (cumulAmort + dotation > base) dotation = base - cumulAmort;
+                if (dotation <= 0 && i > 0) break;
+
+                cumulAmort += dotation;
+                vnc -= dotation;
+
+                const row = `<tr>
+                    <td class="p-3 font-bold text-slate-600">${exercice}</td>
+                    <td class="p-3">${formatCur(base)}</td>
+                    <td class="p-3 text-right font-medium">${formatCur(dotation)}</td>
+                    <td class="p-3 text-right text-slate-400 italic">calcul en cours...</td>
+                    <td class="p-3 text-right bg-blue-50 font-bold text-blue-700">0,00 €</td>
+                    <td class="p-3 text-right">${formatCur(cumulAmort)}</td>
+                    <td class="p-3 text-right font-bold text-emerald-600">${formatCur(vnc)}</td>
+                </tr>`;
+                corps.innerHTML += row;
+            }
+        }
     </script>
 </body>
 </html>
