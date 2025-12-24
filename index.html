@@ -185,6 +185,23 @@ function calculer(){
 // UI véhicule
  d('isVehicule').addEventListener('change',()=>{
    d('vehiculeBox').classList.toggle('hidden',!d('isVehicule').checked);
+   recalculerBase();
+});
+
+// auto-remplissage dates
+d('dateAcq').addEventListener('change',()=>{
+  const v=d('dateAcq').value;
+  if(!v) return;
+  d('dateServ').value=v;
+  const y=new Date(v).getFullYear();
+  d('dateOpen').value=`${y}-01-01`;
+  d('dateClose').value=`${y}-12-31`;
+  recalculerBase();
+});
+
+['baseHT','valeurResiduelle'].forEach(id=>{
+  d(id).addEventListener('input',recalculerBase);
+});
  });
 </script>
 </body>
