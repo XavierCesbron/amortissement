@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expert-Amort PRO - V8</title>
+    <title>Expert-Amort PRO - V9 Final</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
         .collapsible-content.active { max-height: 2000px; }
-        th, td { border: 1px solid #cbd5e1; padding: 10px !important; }
-        input:focus { border-color: #10b981; outline: none; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
+        th, td { border: 1px solid #cbd5e1; padding: 12px !important; }
+        .font-numeric { font-family: 'Courier New', Courier, monospace; }
     </style>
 </head>
 <body class="bg-slate-50 p-6 font-sans text-slate-800">
@@ -17,7 +17,7 @@
     <div class="max-w-6xl mx-auto pb-24">
         <header class="mb-8 text-center">
             <h1 class="text-4xl font-black text-slate-900 italic uppercase">Expert-Amort <span class="text-emerald-600 tracking-tighter">PRO</span></h1>
-            <p class="text-slate-500 font-medium">Précision Comptable & Fiscale - Version Stabilisée</p>
+            <p class="text-slate-500 font-medium italic">Logiciel de simulation comptable et fiscale</p>
         </header>
 
         <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
@@ -34,7 +34,7 @@
                             <input type="date" id="dateAcq" class="w-full border p-2 rounded-lg text-sm bg-slate-50">
                         </div>
                         <div>
-                            <label class="text-[10px] font-black text-slate-400 uppercase italic">Mise en service</label>
+                            <label class="text-[10px] font-black text-slate-400 uppercase">Mise en service</label>
                             <input type="date" id="dateService" class="w-full border p-2 rounded-lg text-sm">
                         </div>
                     </div>
@@ -53,15 +53,15 @@
                 <div class="space-y-4">
                     <div>
                         <label class="text-[10px] font-black text-slate-400 uppercase">Valeur d'acquisition HT</label>
-                        <input type="number" id="montantHT" placeholder="0.00" class="w-full border-2 p-3 rounded-xl text-2xl font-black text-blue-800 border-blue-50">
+                        <input type="number" id="montantHT" placeholder="0.00" class="w-full border-2 p-3 rounded-xl text-2xl font-black text-blue-800 border-blue-50 shadow-inner">
                     </div>
-                    <div class="flex items-center gap-3 p-3 bg-blue-600 text-white rounded-xl shadow-inner">
+                    <div class="flex items-center gap-3 p-3 bg-blue-600 text-white rounded-xl">
                         <input type="checkbox" id="isVehicule" class="w-5 h-5 cursor-pointer">
-                        <label for="isVehicule" class="text-xs font-bold uppercase tracking-tighter">Véhicule de Tourisme (Ajout TVA 20%)</label>
+                        <label for="isVehicule" class="text-xs font-bold uppercase tracking-tighter">Véhicule de Tourisme (TVA non récupérable 20%)</label>
                     </div>
                     <div class="flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-xl">
-                        <span class="text-[10px] font-black text-slate-500 uppercase">Valeur Résiduelle (VR)</span>
-                        <input type="number" id="valeurResiduelle" value="0" class="w-32 border p-2 rounded-lg text-right font-bold text-red-600">
+                        <span class="text-[10px] font-black text-slate-500 uppercase italic">Valeur Résiduelle (VR)</span>
+                        <input type="number" id="valeurResiduelle" value="0" class="w-32 border p-2 rounded-lg text-right font-black text-red-600">
                     </div>
                 </div>
             </div>
@@ -70,12 +70,12 @@
         <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
             <div class="flex items-center gap-3 mb-6 border-b pb-4 text-emerald-700">
                 <span class="bg-emerald-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold">2</span>
-                <h2 class="text-xl font-bold uppercase tracking-tight">Méthodes & Durées</h2>
+                <h2 class="text-xl font-bold uppercase tracking-tight">Méthodes & Base de temps</h2>
             </div>
 
             <div class="mb-8 p-3 bg-slate-800 text-white rounded-xl flex gap-6 items-center justify-center">
-                <span class="text-[10px] font-black tracking-widest uppercase text-slate-400">Prorata Temporis</span>
-                <select id="baseJours" class="bg-slate-700 p-2 rounded-lg text-xs font-bold border-none outline-none">
+                <span class="text-[10px] font-black tracking-widest uppercase text-slate-400 italic">Base Prorata :</span>
+                <select id="baseJours" class="bg-slate-700 p-2 rounded-lg text-xs font-bold border-none outline-none cursor-pointer">
                     <option value="360">360 jours (Méthode Comptable - 30j/mois)</option>
                     <option value="365">365 jours (Méthode Réelle - Calendaire)</option>
                 </select>
@@ -83,9 +83,9 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="p-5 bg-emerald-50 rounded-2xl border border-emerald-200 shadow-sm">
-                    <h3 class="text-xs font-black text-emerald-800 mb-4 uppercase flex items-center gap-2">📊 Amortissement Économique</h3>
+                    <h3 class="text-xs font-black text-emerald-800 mb-4 uppercase italic underline">📊 Amortissement Économique</h3>
                     <div class="space-y-4">
-                        <select id="typeEco" class="w-full border p-3 rounded-xl text-sm font-bold bg-white">
+                        <select id="typeEco" class="w-full border p-3 rounded-xl text-sm font-bold bg-white cursor-pointer">
                             <option value="lineaire">Linéaire</option>
                             <option value="degressif">Dégressif</option>
                             <option value="variable">Variable (Unités d'œuvre)</option>
@@ -106,7 +106,7 @@
                     </button>
                     <div id="fiscContent" class="collapsible-content">
                         <div class="mt-3 p-5 bg-white rounded-2xl border-2 border-blue-100 shadow-xl space-y-4">
-                            <select id="typeFisc" class="w-full border p-3 rounded-xl text-sm font-bold">
+                            <select id="typeFisc" class="w-full border p-3 rounded-xl text-sm font-bold bg-white">
                                 <option value="lineaire">Linéaire</option>
                                 <option value="degressif" selected>Dégressif</option>
                             </select>
@@ -123,33 +123,33 @@
             </div>
 
             <div id="varContent" class="hidden mt-8 p-6 bg-amber-50 rounded-2xl border-2 border-dashed border-amber-300">
-                <h3 class="text-xs font-black text-amber-800 mb-4 uppercase">Unités d'œuvre par an</h3>
+                <h3 class="text-xs font-black text-amber-800 mb-4 uppercase tracking-widest">Saisie des Unités d'œuvre</h3>
                 <div id="varGrid" class="grid grid-cols-2 md:grid-cols-5 gap-4"></div>
-                <div class="mt-6 p-4 bg-amber-800 text-white rounded-xl text-right font-black uppercase text-sm tracking-widest shadow-lg">
+                <div class="mt-6 p-4 bg-amber-800 text-white rounded-xl text-right font-black uppercase text-sm tracking-widest">
                     Production Totale : <span id="varTotal">0</span>
                 </div>
             </div>
         </section>
 
         <section class="mb-8">
-            <button onclick="toggleSection('cessionContent')" class="w-full flex items-center justify-between bg-white p-5 rounded-2xl shadow-sm border border-slate-200 hover:bg-slate-50">
+            <button onclick="toggleSection('cessionContent')" class="w-full flex items-center justify-between bg-white p-5 rounded-2xl shadow-sm border border-slate-200 hover:bg-slate-50 transition-all">
                 <div class="flex items-center gap-3 text-slate-700">
                     <span class="bg-slate-300 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold">3</span>
-                    <h2 class="text-xl font-bold uppercase tracking-tight">Événement de Cession</h2>
+                    <h2 class="text-xl font-bold uppercase tracking-tight text-slate-400">Données de Cession</h2>
                 </div>
                 <span class="text-slate-400">➕</span>
             </button>
             <div id="cessionContent" class="collapsible-content bg-white border-x border-b border-slate-200 rounded-b-2xl mx-2 shadow-inner">
                 <div class="p-6">
-                    <label class="block text-xs font-black text-red-600 mb-2 uppercase">Date de sortie de l'actif</label>
+                    <label class="block text-xs font-black text-red-600 mb-2 uppercase italic">Date de sortie de l'actif (cession)</label>
                     <input type="date" id="dateCession" class="w-full md:w-1/3 border-2 border-red-50 p-2 rounded-xl focus:border-red-500">
                 </div>
             </div>
         </section>
 
         <div class="bg-slate-900 text-white p-6 rounded-3xl shadow-2xl flex flex-col md:flex-row justify-between items-center gap-6 sticky bottom-4 z-50 border-t-4 border-emerald-500">
-            <div class="text-center md:text-left">
-                <span class="text-slate-500 text-[10px] uppercase font-black tracking-widest italic">Base Amortissable Économique (VO - VR)</span>
+            <div>
+                <span class="text-slate-500 text-[10px] uppercase font-black tracking-widest italic">BASE AMORT. ECO (VO - VR)</span>
                 <div id="resultatBase" class="text-4xl font-black text-emerald-400 tracking-tighter">0,00 €</div>
             </div>
             <button onclick="genererTableau()" class="w-full md:w-auto bg-emerald-600 hover:bg-emerald-500 text-white px-16 py-5 rounded-2xl font-black uppercase text-xl shadow-lg transition-transform active:scale-95">Générer le Tableau</button>
@@ -160,8 +160,8 @@
                 <table class="w-full text-left border-collapse text-sm">
                     <thead class="bg-slate-800 text-white text-[10px] uppercase tracking-tighter text-center">
                         <tr class="divide-x divide-slate-700">
-                            <th rowspan="2" class="p-4 border-r border-slate-700">Exercice</th>
-                            <th colspan="2" class="bg-emerald-900/50">Comptable</th>
+                            <th rowspan="2" class="p-4">Exercice</th>
+                            <th colspan="2" class="bg-emerald-900/50">Économique</th>
                             <th colspan="2" class="bg-blue-900/50">Fiscal</th>
                             <th colspan="3" class="bg-slate-700">Dérogatoire</th>
                             <th rowspan="2" class="bg-slate-900 text-emerald-400">VNC Eco</th>
@@ -180,18 +180,18 @@
 
     <script>
         // --- LOGIQUE REACTIVE ---
-        const inputs = ['dateAcq', 'dateService', 'montantHT', 'isVehicule', 'valeurResiduelle', 'typeEco', 'dureeEco', 'dureeFisc'];
-        
-        inputs.forEach(id => {
-            document.getElementById(id).addEventListener('input', (e) => {
+        const ids = ['dateAcq', 'dateService', 'montantHT', 'isVehicule', 'valeurResiduelle', 'typeEco', 'dureeEco', 'dureeFisc'];
+        ids.forEach(id => {
+            const el = document.getElementById(id);
+            el.addEventListener('input', () => {
                 if(id === 'dateAcq') {
-                    const d = e.target.value;
+                    const d = el.value;
                     document.getElementById('dateService').value = d;
                     const y = new Date(d).getFullYear();
                     document.getElementById('bilanDebut').value = `${y}-01-01`;
                     document.getElementById('bilanFin').value = `${y}-12-31`;
                 }
-                if(id === 'valeurResiduelle' && parseFloat(e.target.value) > 0) toggleFiscal(true);
+                if(id === 'valeurResiduelle' && parseFloat(el.value) > 0) toggleFiscal(true);
                 if(id === 'typeEco' || id === 'dureeEco') handleVariableUI();
                 calculerBase();
             });
@@ -250,12 +250,13 @@
             const isTVA = document.getElementById('isVehicule').checked;
             const baseE = (isTVA ? mtHT * 1.2 : mtHT) - vr;
             const baseF = (isTVA ? mtHT * 1.2 : mtHT);
-            
             const dAcq = new Date(document.getElementById('dateAcq').value);
             const dServ = new Date(document.getElementById('dateService').value);
             const bT = document.getElementById('baseJours').value;
-            const durE = parseInt(document.getElementById('dureeEco')), durF = parseInt(document.getElementById('dureeFisc').value);
-            const modeE = document.getElementById('typeEco').value, modeF = document.getElementById('typeFisc').value;
+            const durE = parseInt(document.getElementById('dureeEco').value);
+            const durF = parseInt(document.getElementById('dureeFisc').value);
+            const modeE = document.getElementById('typeEco').value;
+            const modeF = document.getElementById('typeFisc').value;
 
             if (isNaN(dServ.getTime())) return alert("Saisissez une date de mise en service.");
 
@@ -276,7 +277,7 @@
                 let dotE = 0, dotF = 0;
 
                 // --- ÉCONOMIQUE ---
-                if (cE < baseE) {
+                if (cE < (baseE - 0.01)) {
                     if (modeE === "lineaire") {
                         if (i === 0) {
                             let js = (bT === "360") ? getJ360(dServ, new Date(currY, 11, 30)) : Math.floor((new Date(currY, 11, 31) - dServ) / 86400000) + 1;
@@ -295,7 +296,7 @@
                 }
 
                 // --- FISCAL ---
-                if (cF < baseF && i < durF) {
+                if (cF < (baseF - 0.01) && i < durF) {
                     if (modeF === "degressif") {
                         let tD = (1 / durF) * coeffF;
                         if (i === 0) dotF = baseF * tD * ((12 - dAcq.getMonth()) / 12);
@@ -319,16 +320,16 @@
                 cE += dotE; cF += dotF; cD += derog;
 
                 corps.innerHTML += `
-                    <tr class="divide-x divide-slate-100 border-b hover:bg-slate-50 transition-colors">
+                    <tr class="divide-x divide-slate-100 border-b hover:bg-slate-50">
                         <td class="p-3 text-center bg-slate-50 font-black">${currY}</td>
-                        <td class="text-right text-emerald-600">${formatC(dotE)}</td>
-                        <td class="text-right text-[10px] text-slate-400 italic">${formatC(cE)}</td>
-                        <td class="text-right text-blue-600">${formatC(dotF)}</td>
-                        <td class="text-right text-[10px] text-slate-400 italic">${formatC(cF)}</td>
-                        <td class="text-right text-blue-900">${derog > 0 ? formatC(derog) : '-'}</td>
-                        <td class="text-right text-orange-600">${derog < 0 ? formatC(Math.abs(derog)) : '-'}</td>
-                        <td class="text-right text-[10px] text-slate-500">${formatC(cD)}</td>
-                        <td class="text-right bg-slate-50 text-slate-900">${formatC((baseE + vr) - cE)}</td>
+                        <td class="text-right text-emerald-600 font-numeric">${formatC(dotE)}</td>
+                        <td class="text-right text-[10px] text-slate-400 font-numeric">${formatC(cE)}</td>
+                        <td class="text-right text-blue-600 font-numeric">${formatC(dotF)}</td>
+                        <td class="text-right text-[10px] text-slate-400 font-numeric">${formatC(cF)}</td>
+                        <td class="text-right text-blue-900 font-numeric">${derog > 0.01 ? formatC(derog) : '-'}</td>
+                        <td class="text-right text-orange-600 font-numeric">${derog < -0.01 ? formatC(Math.abs(derog)) : '-'}</td>
+                        <td class="text-right text-[10px] text-slate-500 font-numeric">${formatC(cD)}</td>
+                        <td class="text-right bg-slate-50 text-slate-900 font-numeric">${formatC((baseE + vr) - cE)}</td>
                     </tr>`;
             }
         }
