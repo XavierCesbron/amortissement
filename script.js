@@ -1,56 +1,65 @@
+// Helper pour récupérer un élément par id
 const d = id => document.getElementById(id);
-const € = v => v.toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
 
+// Conversion en euro (fonction ASCII sûre)
+const euro = v => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(v);
+
+// Calcul prorata en base 360
 function prorata(dateDebut, dateFin){
-  const jours = (dateFin - dateDebut) / 86400000 + 1;
-  return jours / 360;
+    const jours = (dateFin - dateDebut) / 86400000 + 1;
+    return jours / 360;
 }
 
+// Recalcul automatique de la base amortissable
 function recalculerBase(){
-  let base = +d('baseHT').value || 0;
-  if(d('isVehicule').checked) base *= 1.2;
-  base -= (+d('valeurResiduelle').value || 0);
-  d('baseAmort').innerText = €(base);
-  return base;
+    let base = parseFloat(d('montantHT')?.value) || 0;
+    if(d('isVehicule')?.checked) base *= 1.2;
+    base -= parseFloat(d('valeurResiduelle')?.value) || 0;
+    d('resultatBase').innerText = euro(base);
+    return base;
 }
 
-function calculer(){
-  const base = recalculerBase();
+// Génération du tableau d'amortissement simple
+function genererTableau(){
+    const base = recalculerBase();
+    const durE = parseInt(d('dureeEco')?.value) || 5;
 
-  const serv = new Date(d('dateServ').value);
-  const open = new Date(d('dateOpen').value);
-  const close = new Date(d('dateClose').value);
+    const dateServ = new Date(d('dateService')?.value);
+    const dateDebut = new Date(d('bilanDebut')?.value);
+    const dateFin = new Date(d('bilanFin')?.value);
 
-  const duree = +d('dureeCompta').value;
-  const taux = 1 / duree;
+    let cumul = 0;
+    let html = `<thead><tr><th>Année</th><th>Dotation</th><th>Cumul</th><th>VNC</th></tr></thead><tbody>`;
 
-  let cumul = 0;
-  let html = '<tr><th>Année</th><th>Dotation</th><th>Cumul</th><th>VNC</th></tr>';
+    for(let i = 0; i < durE; i++){
+        let dot = base / durE;
+        if(i === 0 && dateServ > dateDebut) dot *= prorata(dateServ, dateFin);
+        if(i === durE - 1) dot = base - cumul; // dernière année pour ajuster arrondi
+        cumul += dot;
+        html += `<tr>
+            <td>${dateDebut.getFullYear()+i}</td>
+            <td>${euro(dot)}</td>
+            <td>${euro(cumul)}</td>
+            <td>${euro(base - cumul)}</td>
+        </tr>`;
+    }
 
-  for(let i=0;i<duree;i++){
-    let dot = base * taux;
-    if(i === 0 && serv > open) dot *= prorata(serv, close);
-    if(i === duree-1) dot = base - cumul;
-    cumul += dot;
-    html += `<tr>
-      <td>${open.getFullYear()+i}</td>
-      <td>${€(dot)}</td>
-      <td>${€(cumul)}</td>
-      <td>${€(base-cumul)}</td>
-    </tr>`;
-  }
-
-  d('tableAmort').innerHTML = html;
+    d('tableNormal').innerHTML = html;
 }
 
-d('btnCalculer').addEventListener('click', calculer);
+// Gestion du bouton calcul
+d('btnCalculer')?.addEventListener('click', genererTableau);
 
-d('dateAcq').addEventListener('change', e=>{
-  const y = new Date(e.target.value).getFullYear();
-  d('dateServ').value = e.target.value;
-  d('dateOpen').value = `${y}-01-01`;
-  d('dateClose').value = `${y}-12-31`;
+// Auto remplissage des dates après acquisition
+d('dateAcq')?.addEventListener('change', e => {
+    const y = new Date(e.target.value).getFullYear();
+    d('dateService').value = e.target.value;
+    d('bilanDebut').value = `${y}-01-01`;
+    d('bilanFin').value = `${y}-12-31`;
+    recalculerBase();
 });
 
-['baseHT','valeurResiduelle','isVehicule']
-.forEach(id => d(id).addEventListener('input', recalculerBase));
+// Recalculer automatiquement quand les champs changent
+['montantHT','valeurResiduelle','isVehicule'].forEach(id => {
+    d(id)?.addEventListener('input', recalculerBase);
+});
