@@ -1,61 +1,43 @@
-// --- UTILITAIRES ---
-const joursEntre = (dateDebut, dateFin) => {
-    const diffMs = dateFin - dateDebut;
-    return diffMs / (1000 * 60 * 60 * 24) + 1; // inclusif
-};
+// --- MOTEUR LINÉAIRE ---
+function amortissementLineaire(base, duree, dateService, dateCession=null) {
+    const result = [];
+    const start = new Date(dateService);
+    const endExercice = new Date(start.getFullYear(), 11, 31);
 
-const moisEntiersEntre = (dateDebut, dateFin) => {
-    return (dateFin.getFullYear() - dateDebut.getFullYear()) * 12 + (dateFin.getMonth() - dateDebut.getMonth()) + 1;
-};
-
-// --- MOTEURS ---
-function amortissementLineaire(base, duree, dateDebut, dateFin) {
-    const amortissements = [];
     for (let i = 0; i < duree; i++) {
-        let deb = i === 0 ? dateDebut : new Date(dateDebut.getFullYear() + i, dateDebut.getMonth(), dateDebut.getDate());
-        let fin = new Date(dateDebut.getFullYear() + i, dateDebut.getMonth(), dateDebut.getDate());
-        if (i === 0) fin = dateFin < new Date(deb.getFullYear(), 11, 31) ? dateFin : new Date(deb.getFullYear(), 11, 31);
-        let ratio = joursEntre(deb, fin) / 360;
-        amortissements.push((base / duree) * ratio);
+        let debut = i === 0 ? start : new Date(start.getFullYear()+i, 0, 1);
+        let fin = i === duree-1 ? (dateCession || new Date(start.getFullYear()+i,11,31)) : new Date(start.getFullYear()+i,11,31);
+        let jours = (fin - debut)/86400000 +1;
+        let fraction = jours / 360; // base 360
+        let dot = (base/duree) * fraction;
+        result.push({annee: debut.getFullYear(), dot, cumul: result.reduce((s,r)=>s+r.dot,0)+dot});
     }
-    return amortissements;
+    return result;
 }
 
-function amortissementDegressif(base, duree, dateDebut, dateCession = null) {
-    if (duree <= 2) throw new Error("Dégressif non autorisé pour durée <= 2");
-    const coeff = duree <= 4 ? 1.25 : duree <= 6 ? 1.75 : 2.25;
-    let amortissements = [];
+// --- MOTEUR DÉGRESSIF ---
+function amortissementDegressif(base, duree, dateService, dateCession=null) {
+    if(duree <= 2) throw "Dégressif impossible sur durée <= 2 ans";
+    const result = [];
+    const start = new Date(dateService);
     let vnc = base;
+    const coeff = duree <= 4 ? 1.25 : (duree <= 6 ? 1.75 : 2.25);
 
-    for (let i = 0; i < duree; i++) {
-        let t = (1 / duree) * coeff;
-        if (i === 0) {
-            // prorata mois entiers
-            const mois = 12 - dateDebut.getMonth();
-            t *= mois / 12;
-        }
-
-        let linRestant = (1 / (duree - i));
-        let amort = vnc * t;
-        // comparer avec linéaire restant
-        if (amort / vnc < linRestant) amort = vnc * linRestant;
-
-        // gestion cession
-        if (dateCession && i === duree - 1) {
-            const fin = new Date(dateCession.getFullYear(), dateCession.getMonth() - 1, 0);
-            const moisProrata = moisEntiersEntre(new Date(dateDebut.getFullYear() + i, 0, 1), fin) / 12;
-            amort *= moisProrata;
-        }
-
-        amortissements.push(amort);
-        vnc -= amort;
-        if (vnc <= 0) break;
+    for(let i=0;i<duree;i++){
+        let tauxLin = 1/duree;
+        let tauxD = coeff/duree;
+        let dot = Math.max(vnc*tauxD, vnc*tauxLin);
+        if(i===0) dot *= (12-start.getMonth())/12; // prorata mois entiers
+        if(dateCession && i===duree-1) dot *= (dateCession.getMonth())/11;
+        result.push({annee: start.getFullYear()+i, dot, cumul: base - (vnc -= dot)});
     }
-
-    return amortissements;
+    return result;
 }
 
-function amortissementVariable(base, valeurs) {
-    const total = valeurs.reduce((acc, v) => acc + v, 0);
-    return valeurs.map(v => base * v / total);
+// --- MOTEUR VARIABLE ---
+function amortissementVariable(base, duree) {
+    const values = Array.from(document.querySelectorAll('.variableField')).map(v=>parseFloat(v.value)||0);
+    const totalV = values.reduce((s,v)=>s+v,0);
+    const result = values.map((v,i)=>({annee: i+1, dot: base*v/totalV}));
+    return result;
 }
