@@ -2,189 +2,166 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Expert-Amort PRO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-    .collapsible-content { max-height: 0; overflow: hidden; transition: max-height .5s ease; }
-    .collapsible-content.active { max-height: 2000px; }
+.collapsible-content { max-height: 0; overflow: hidden; transition: max-height .4s ease; }
+.font-numeric { font-family: ui-sans-serif, system-ui; font-weight: 700; }
 </style>
 </head>
 
-<body class="bg-slate-50 p-6 font-sans text-slate-800">
+<body class="bg-slate-50 p-6 text-slate-800">
 
-<div class="max-w-6xl mx-auto space-y-6">
+<div class="max-w-6xl mx-auto">
 
-<header class="text-center border-b pb-6">
+<header class="mb-6 text-center border-b pb-4">
     <h1 class="text-4xl font-black">Expert-Amort <span class="text-emerald-600">PRO</span></h1>
-    <p class="text-sm uppercase text-slate-500">Moteur d’amortissement professionnel</p>
+    <p class="text-xs uppercase text-slate-500">Version de travail – moteur sécurisé</p>
 </header>
 
-<!-- PARAMÈTRES -->
-<section class="bg-white p-6 rounded-xl shadow">
+<!-- ================= INVESTISSEMENT ================= -->
+<section class="bg-white p-6 rounded-xl shadow mb-6">
     <h2 class="text-xl font-bold mb-4">1. Investissement</h2>
 
     <div class="grid md:grid-cols-2 gap-4">
         <div>
             <label>Date d’acquisition</label>
-            <input type="date" id="dateAcq" class="w-full border p-2 rounded">
+            <input id="dateAcq" type="date" class="w-full border p-2 rounded">
         </div>
         <div>
             <label>Date de mise en service</label>
-            <input type="date" id="dateService" class="w-full border p-2 rounded">
+            <input id="dateService" type="date" class="w-full border p-2 rounded">
         </div>
+
+        <div>
+            <label>Ouverture exercice</label>
+            <input id="bilanDebut" type="date" class="w-full border p-2 rounded">
+        </div>
+        <div>
+            <label>Clôture exercice</label>
+            <input id="bilanFin" type="date" class="w-full border p-2 rounded">
+        </div>
+
         <div>
             <label>Base HT</label>
-            <input type="number" id="montantHT" class="w-full border p-2 rounded">
+            <input id="montantHT" type="number" class="w-full border p-2 rounded">
         </div>
+
         <div>
             <label>Valeur résiduelle</label>
-            <input type="number" id="valeurResiduelle" value="0" class="w-full border p-2 rounded">
-        </div>
-
-        <div>
-            <label>Date ouverture exercice</label>
-            <input type="date" id="bilanDebut" class="w-full border p-2 rounded">
-        </div>
-        <div>
-            <label>Date clôture exercice</label>
-            <input type="date" id="bilanFin" class="w-full border p-2 rounded">
-        </div>
-
-        <div>
-            <label>Date de cession</label>
-            <input type="date" id="dateCession" class="w-full border p-2 rounded">
+            <input id="valeurResiduelle" type="number" value="0" class="w-full border p-2 rounded">
         </div>
 
         <div class="flex items-center gap-2">
-            <input type="checkbox" id="isVehicule">
-            <label>Véhicule de tourisme (TVA +20%)</label>
+            <input id="isVehicule" type="checkbox">
+            <label>Véhicule de tourisme (TTC)</label>
         </div>
     </div>
 </section>
 
-<section class="bg-white p-6 rounded-xl shadow mt-6">
-    <h2 class="text-xl font-bold mb-4">2. Méthodes</h2>
+<!-- ================= MÉTHODE ================= -->
+<section class="bg-white p-6 rounded-xl shadow mb-6">
+    <h2 class="text-xl font-bold mb-4">2. Méthode</h2>
 
-    <div class="grid md:grid-cols-2 gap-6">
+    <div class="grid md:grid-cols-2 gap-4">
         <div>
-            <label>Durée économique</label>
-            <input type="number" id="dureeEco" value="5" class="w-full border p-2 rounded">
+            <label>Durée (années)</label>
+            <input id="dureeEco" type="number" value="5" class="w-full border p-2 rounded">
         </div>
 
         <div>
-            <label>Régime fiscal</label>
+            <label>Mode fiscal</label>
             <select id="typeFisc" class="w-full border p-2 rounded">
                 <option value="lineaire">Linéaire</option>
                 <option value="degressif">Dégressif</option>
             </select>
         </div>
-
-        <div>
-            <label>Durée fiscale</label>
-            <input type="number" id="dureeFisc" value="5" class="w-full border p-2 rounded">
-        </div>
-
-        <div class="flex items-center gap-2">
-            <input type="checkbox" id="activeFiscal" checked>
-            <label>Activer régime fiscal</label>
-        </div>
     </div>
 </section>
 
 <div class="text-center mt-6">
-    <button onclick="genererTableau()"
-        class="bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-4 rounded-xl text-xl font-bold">
+    <button onclick="genererTableau()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-4 rounded-xl text-xl font-black">
         Calculer
     </button>
 </div>
 
-<div id="zoneTableau" class="mt-10 hidden">
-    <h2 class="text-xl font-bold mb-4">Plan d’amortissement</h2>
+<div id="zoneTableau" class="mt-8 hidden">
+    <h3 class="text-xl font-bold mb-4">Plan d’amortissement</h3>
     <table id="tableNormal" class="w-full border text-sm"></table>
 </div>
 
 <script>
-/* ===== UTILITAIRES ===== */
-const € = v => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(v);
-const get = id => document.getElementById(id).value;
+// ------------------ OUTILS ------------------
+const € = v => new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"}).format(v);
+const $ = id => document.getElementById(id);
 
-function daysBetween(a,b){return Math.floor((b-a)/86400000)+1;}
+function jours(d1, d2) { return Math.floor((d2 - d1) / 86400000) + 1; }
 
-/* ===== MOTEUR PRINCIPAL ===== */
+// Auto dates
+document.getElementById("dateAcq").addEventListener("change", e => {
+    const d = new Date(e.target.value);
+    if (!isNaN(d)) {
+        $("dateService").value = e.target.value;
+        $("bilanDebut").value = `${d.getFullYear()}-01-01`;
+        $("bilanFin").value = `${d.getFullYear()}-12-31`;
+    }
+});
+
+// ------------------ CALCUL ------------------
 function genererTableau() {
 
-    const baseHT = +get("montantHT");
-    const vr = +get("valeurResiduelle");
-    const baseEco = (document.getElementById("isVehicule").checked ? baseHT*1.2 : baseHT) - vr;
-    const baseFisc = (document.getElementById("isVehicule").checked ? baseHT*1.2 : baseHT);
+    const baseHT = +$("montantHT").value || 0;
+    const vr = +$("valeurResiduelle").value || 0;
+    const isVeh = $("isVehicule").checked;
 
-    const dServ = new Date(get("dateService"));
-    const dDeb = new Date(get("bilanDebut"));
-    const dFin = new Date(get("bilanFin"));
-    const dCess = get("dateCession") ? new Date(get("dateCession")) : null;
+    const base = (isVeh ? baseHT * 1.2 : baseHT) - vr;
 
-    const dureeEco = +get("dureeEco");
-    const dureeFisc = +get("dureeFisc");
-    const typeFisc = get("typeFisc");
+    const dAcq = new Date($("dateAcq").value);
+    const dDeb = new Date($("bilanDebut").value);
+    const dFin = new Date($("bilanFin").value);
 
-    let cumulEco = 0, cumulFisc = 0;
+    const duree = parseInt($("dureeEco").value);
+
+    let cumul = 0;
     let lignes = [];
 
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < duree; i++) {
 
-        let debut = new Date(dDeb); debut.setFullYear(dDeb.getFullYear() + i);
-        let fin = new Date(dFin); fin.setFullYear(dFin.getFullYear() + i);
-        if (dCess && debut > dCess) break;
+        let debut = new Date(dDeb);
+        debut.setFullYear(dDeb.getFullYear() + i);
 
-        /* ÉCO */
-        let debEco = i === 0 ? dServ : debut;
-        let finEco = dCess && dCess < fin ? dCess : fin;
-        let dotEco = ((baseEco / dureeEco) * (daysBetween(debEco, finEco) / 365));
-        dotEco = Math.min(dotEco, baseEco - cumulEco);
+        let fin = new Date(dFin);
+        fin.setFullYear(dFin.getFullYear() + i);
 
-        /* FISCAL */
-        let dotFisc = 0;
-        if (typeFisc === "lineaire") {
-            let deb = i === 0 ? dServ : debut;
-            let finx = dCess && dCess < fin ? dCess : fin;
-            dotFisc = (baseFisc / dureeFisc) * (daysBetween(deb, finx) / 365);
-        } else {
-            let coef = dureeFisc <= 4 ? 1.25 : (dureeFisc <= 6 ? 1.75 : 2.25);
-            let baseRestante = baseFisc - cumulFisc;
-            let mois = 12;
-            if (i === 0) mois = 12 - dServ.getMonth();
-            if (dCess) mois = dCess.getMonth();
-            dotFisc = baseRestante * (coef / dureeFisc) * (mois / 12);
-        }
+        let debutCalc = (i === 0 ? dAcq : debut);
+        let joursAmort = jours(debutCalc, fin);
 
-        dotFisc = Math.min(dotFisc, baseFisc - cumulFisc);
+        let dot = (base / duree) * (joursAmort / 365);
+        dot = Math.min(dot, base - cumul);
 
-        cumulEco += dotEco;
-        cumulFisc += dotFisc;
+        cumul += dot;
 
         lignes.push({
             annee: debut.getFullYear(),
-            eco: dotEco,
-            fisc: dotFisc,
-            der: dotFisc - dotEco,
-            vnc: baseEco - cumulEco
+            dot,
+            cumul,
+            vnc: base - cumul
         });
 
-        if (cumulEco >= baseEco) break;
+        if (cumul >= base) break;
     }
 
     let html = `<thead class="bg-slate-800 text-white">
-    <tr><th>Année</th><th>Dot. éco</th><th>Dot. fisc</th><th>Diff.</th><th>VNC</th></tr>
+        <tr><th>Année</th><th>Dotation</th><th>Amort. cumulé</th><th>VNC</th></tr>
     </thead><tbody>`;
 
     lignes.forEach(l => {
         html += `<tr>
             <td>${l.annee}</td>
-            <td>${€(l.eco)}</td>
-            <td>${€(l.fisc)}</td>
-            <td>${€(l.der)}</td>
+            <td>${€(l.dot)}</td>
+            <td>${€(l.cumul)}</td>
             <td>${€(l.vnc)}</td>
         </tr>`;
     });
