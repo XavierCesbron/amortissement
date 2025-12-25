@@ -1,50 +1,112 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Simulateur amortissement</title>
+<meta charset="UTF-8">
+<title>Test Amortissement – Base saine</title>
 
-  <!-- IMPORTANT : moteur graphique -->
-  <script src="https://cdn.tailwindcss.com"></script>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f3f4f6;
+    padding: 30px;
+}
 
-  <!-- Ton style personnel -->
-  <link rel="stylesheet" href="css/style.css">
+h1 {
+    margin-bottom: 20px;
+}
+
+section {
+    background: white;
+    padding: 20px;
+    max-width: 600px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 8px;
+    margin-top: 6px;
+    font-size: 14px;
+}
+
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+pre {
+    margin-top: 20px;
+    background: #111;
+    color: #0f0;
+    padding: 15px;
+    font-size: 14px;
+}
+</style>
 </head>
+
 <body>
 
-<h1>Simulateur d'amortissement</h1>
+<h1>Simulateur d’amortissement – Test</h1>
 
-<!-- PARAMÈTRES -->
 <section>
-  <label>Base amortissable :</label>
-  <input type="number" id="base" />
+  <label>Base amortissable</label>
+  <input id="base" type="number" value="10000">
 
-  <label>Durée (années) :</label>
-  <input type="number" id="duree" />
+  <label>Durée (années)</label>
+  <input id="duree" type="number" value="5">
 
-  <label>Mode :</label>
+  <label>Mode</label>
   <select id="mode">
     <option value="lineaire">Linéaire</option>
     <option value="degressif">Dégressif</option>
   </select>
 
-  <label>Date d'acquisition :</label>
-  <input type="date" id="dateAcquisition">
+  <button onclick="calculer()">Calculer</button>
 
-  <label>Date de clôture :</label>
-  <input type="date" id="dateCloture">
-
-  <label>Date de cession (optionnel) :</label>
-  <input type="date" id="dateCession">
-
-  <button id="btnCalcul">Calculer</button>
+  <pre id="resultat"></pre>
 </section>
 
-<pre id="resultat"></pre>
+<script>
+function calculer() {
+    const base = Number(document.getElementById("base").value);
+    const duree = Number(document.getElementById("duree").value);
+    const mode = document.getElementById("mode").value;
 
-<script src="js/config.js"></script>
-<script src="js/amortissement-utils.js"></script>
-<script src="js/moteur-amortissement.js"></script>
-<script src="js/main.js"></script>
+    let txt = "MODE : " + mode + "\\n";
+
+    if (mode === "lineaire") {
+        let annuite = base / duree;
+        for (let i = 1; i <= duree; i++) {
+            txt += "Année " + i + " : " + annuite.toFixed(2) + " €\\n";
+        }
+    } else {
+        let taux = (1 / duree) * 1.75;
+        let vnc = base;
+
+        for (let i = 1; i <= duree; i++) {
+            let dot = vnc * taux;
+            vnc -= dot;
+            txt += "Année " + i + " : " + dot.toFixed(2) + " € | VNC " + vnc.toFixed(2) + "\\n";
+        }
+    }
+
+    document.getElementById("resultat").textContent = txt;
+}
+</script>
+
 </body>
 </html>
