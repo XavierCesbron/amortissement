@@ -1,48 +1,68 @@
-// --- UTILITAIRES ---
-const getVal = (id) => document.getElementById(id).value;
-const formatC = (v) => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(v);
+// --- UTILS ---
+const getV = id => document.getElementById(id).value;
+const formatC = v => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(v);
 
-// --- CHAMPS VARIABLES ---
-const dureeInput = document.getElementById('dureeEco');
-const zoneVariable = document.getElementById('zoneVariable');
+function calculerBase() {
+    const mtHT = parseFloat(getV('montantHT')) || 0;
+    const vr = parseFloat(getV('valeurResiduelle')) || 0;
+    const base = (document.getElementById('isVehicule').checked ? mtHT * 1.2 : mtHT) - vr;
+    document.getElementById('resultatBase').innerText = formatC(base);
+    return base;
+}
 
-function majChampsVariable() {
-    const duree = parseInt(dureeInput.value) || 0;
-    zoneVariable.innerHTML = '';
-    for (let i = 0; i < duree; i++) {
-        const div = document.createElement('div');
-        div.innerHTML = `<label>Année ${i + 1} :</label><input type="number" class="valVariable" value="1" style="width:50px;">`;
-        zoneVariable.appendChild(div);
+function toggleFiscalMan() { document.getElementById('fiscContent').classList.toggle('active'); }
+
+// --- DATES AUTOMATIQUES ---
+document.getElementById('dateAcq').addEventListener('input', e => {
+    const d = new Date(e.target.value);
+    if (isNaN(d.getTime())) return;
+    const annee = d.getFullYear();
+    document.getElementById('dateService').value = e.target.value;
+    document.getElementById('bilanDebut').value = `${annee}-01-01`;
+    document.getElementById('bilanFin').value = `${annee}-12-31`;
+    calculerBase();
+});
+
+// --- VEHICULE TVA ---
+document.getElementById('isVehicule').addEventListener('change', e => {
+    document.getElementById('co2Box').classList.toggle('hidden', !e.target.checked);
+    calculerBase();
+});
+
+// --- MODE VARIABLE ---
+document.getElementById('typeEco').addEventListener('change', updateVariableFields);
+document.getElementById('dureeEco').addEventListener('input', updateVariableFields);
+
+function updateVariableFields() {
+    const mode = getV('typeEco');
+    const duree = parseInt(getV('dureeEco')) || 0;
+    const zone = document.getElementById('zoneVariable');
+    zone.innerHTML = '';
+    if (mode !== 'variable' || duree <= 0) return;
+
+    let html = '<div class="mt-2 p-2 bg-yellow-50 border rounded space-y-1">';
+    html += '<label class="font-bold uppercase text-[9px]">Répartitions annuelles</label>';
+    let total = 0;
+    for (let i = 1; i <= duree; i++) {
+        html += `<input type="number" class="variableField w-full border p-1 rounded mb-1" placeholder="Année ${i}" value="1">`;
     }
+    html += '</div>';
+    zone.innerHTML = html;
 }
 
 // --- CALCUL ---
-function calculer() {
-    const base = parseFloat(getVal('montantHT')) || 0;
-    const vr = parseFloat(getVal('valeurResiduelle')) || 0;
-    const isVehicule = document.getElementById('isVehicule').checked;
-    const baseCompta = (isVehicule ? base * 1.2 : base) - vr;
-    const baseFiscal = isVehicule ? base * 1.2 : base;
+document.getElementById('btnCalcul').addEventListener('click', () => {
+    const base = calculerBase();
+    const duree = parseInt(getV('dureeEco')) || 0;
+    const mode = getV('typeEco');
+    const dateService = new Date(getV('dateService'));
+    const dateCession = getV('dateCession') ? new Date(getV('dateCession')) : null;
 
-    const mode = document.getElementById('typeEco').value;
-    const duree = parseInt(dureeInput.value) || 1;
+    let amortissements = [];
+    if (mode === 'lineaire') amortissements = amortissementLineaire(base, duree, dateService, dateCession);
+    else if (mode === 'degressif') amortissements = amortissementDegressif(base, duree, dateService, dateCession);
+    else if (mode === 'variable') amortissements = amortissementVariable(base, duree);
 
-    const dDebut = new Date(getVal('dateService'));
-    const dCession = getVal('dateCession') ? new Date(getVal('dateCession')) : null;
-
-    let amortis = [];
-    if (mode === 'lineaire') amortis = amortissementLineaire(baseCompta, duree, dDebut, dCession);
-    else if (mode === 'degressif') amortis = amortissementDegressif(baseCompta, duree, dDebut, dCession);
-    else if (mode === 'variable') {
-        const vals = Array.from(document.querySelectorAll('.valVariable')).map(e => parseFloat(e.value) || 0);
-        amortis = amortissementVariable(baseCompta, vals);
-    }
-
-    // affichage console (ou tableau HTML)
-    console.log(amortis.map(v => formatC(v)));
-}
-
-// --- EVENT ---
-document.getElementById('btnCalcul').addEventListener('click', calculer);
-dureeInput.addEventListener('input', majChampsVariable);
-document.getElementById('typeEco').addEventListener('change', majChampsVariable);
+    // Affichage dans console pour test
+    console.table(amortissements);
+});
