@@ -2,128 +2,45 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Expert-Amort PRO - V15</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-.collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
-.collapsible-content.active { max-height: 2000px; }
-th, td { border: 1px solid #e2e8f0; padding: 10px; }
-.font-numeric { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; font-weight: 700; }
-.financial-section { background-color: #f8fafc; border: 2px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem; margin-top: 2rem; }
-</style>
+<title>Simulateur amortissement</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-slate-50 p-6 font-sans text-slate-800 text-xs">
 
-<div class="max-w-6xl mx-auto pb-24">
+<body>
 
-<header class="mb-8 text-center border-b-2 border-slate-200 pb-4">
-<h1 class="text-4xl font-black text-slate-900 uppercase">Expert-Amort <span class="text-emerald-600 tracking-tighter text-5xl">PRO</span></h1>
-<p class="text-slate-500 font-bold uppercase tracking-widest text-[10px]">Version 15 - Moteurs corrigés</p>
-</header>
+<h1>Simulateur d'amortissement</h1>
 
-<!-- Onglet 1 : Investissement -->
-<section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-4 font-bold">
-<div class="flex items-center gap-3 mb-6 border-b pb-4 text-blue-700">
-<span class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold text-sm">1</span>
-<h2 class="text-xl font-bold uppercase tracking-tight">INVESTISSEMENT</h2>
-</div>
+<!-- PARAMÈTRES -->
+<section>
+  <label>Base amortissable :</label>
+  <input type="number" id="base" />
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-<div class="space-y-4">
-<div class="grid grid-cols-2 gap-4">
-<div><label class="uppercase text-slate-400">Acquisition</label><input type="date" id="dateAcq" class="w-full border p-2 rounded-lg bg-white shadow-inner"></div>
-<div><label class="uppercase text-slate-400">Mise en service</label><input type="date" id="dateService" class="w-full border p-2 rounded-lg bg-white shadow-inner"></div>
-</div>
-<div class="grid grid-cols-2 gap-4 bg-blue-50 p-4 rounded-xl border border-blue-100 shadow-inner">
-<div><label class="text-blue-500 uppercase font-black text-[9px]">Ouverture Exercice</label><input type="date" id="bilanDebut" class="w-full border p-1 rounded bg-white"></div>
-<div><label class="text-blue-500 uppercase font-black text-[9px]">Clôture Exercice</label><input type="date" id="bilanFin" class="w-full border p-1 rounded bg-white"></div>
-</div>
-</div>
+  <label>Durée (années) :</label>
+  <input type="number" id="duree" />
 
-<div class="space-y-4">
-<div><label class="uppercase text-slate-400">Base Brute (HT)</label><input type="number" id="montantHT" placeholder="0.00" class="w-full border-2 p-3 rounded-xl text-2xl font-black text-blue-800 border-blue-50 shadow-inner"></div>
+  <label>Mode :</label>
+  <select id="mode">
+    <option value="lineaire">Linéaire</option>
+    <option value="degressif">Dégressif</option>
+  </select>
 
-<div class="p-3 bg-blue-600 text-white rounded-xl shadow-lg space-y-3">
-<div class="flex items-center gap-3 border-b border-blue-500 pb-2">
-<input type="checkbox" id="isVehicule" class="w-5 h-5 cursor-pointer">
-<label for="isVehicule" class="uppercase font-black text-[10px]">Véhicule de Tourisme (+20% TVA)</label>
-</div>
-<div id="co2Box" class="hidden space-y-2">
-<div class="flex items-center justify-between gap-2">
-<label class="text-[9px]">LIMITE FISCALE (€) :</label>
-<input type="number" id="limiteLibre" class="w-24 p-1 text-black rounded text-xs font-bold" value="18300">
-</div>
-</div>
-</div>
+  <label>Date d'acquisition :</label>
+  <input type="date" id="dateAcquisition">
 
-<div class="flex items-center justify-between p-3 bg-slate-100 rounded-xl border">
-<span class="uppercase font-black text-slate-500">Valeur Résiduelle (VR)</span>
-<input type="number" id="valeurResiduelle" value="0" class="w-32 border p-2 rounded-lg text-right font-black text-red-600 bg-white">
-</div>
-</div>
-</div>
+  <label>Date de clôture :</label>
+  <input type="date" id="dateCloture">
+
+  <label>Date de cession (optionnel) :</label>
+  <input type="date" id="dateCession">
+
+  <button id="btnCalcul">Calculer</button>
 </section>
 
-<!-- Onglet 2 : Méthodes -->
-<section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-4 font-bold">
-<div class="flex items-center gap-3 mb-6 border-b pb-4 text-emerald-700">
-<span class="bg-emerald-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold text-sm">2</span>
-<h2 class="text-xl font-bold uppercase tracking-tight">Méthodes</h2>
-</div>
+<pre id="resultat"></pre>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-<div class="p-4 bg-emerald-50 rounded-xl border border-emerald-100">
-<h3 class="text-[10px] font-bold text-emerald-800 mb-3 uppercase">Économique</h3>
-<select id="typeEco" class="w-full border p-2 rounded text-sm mb-3 font-bold">
-<option value="lineaire">Linéaire</option>
-<option value="degressif">Dégressif</option>
-<option value="variable">Variable</option>
-</select>
-<div class="flex justify-between items-center font-bold"><span>Durée (ans) :</span><input type="number" id="dureeEco" value="5" class="w-16 border p-1 rounded text-center"></div>
-<div id="variableInputs" class="mt-2 space-y-2 hidden"></div>
-<div id="totalVariableContainer" class="mt-1 text-right hidden">Total: <span id="totalVariable">0</span></div>
-</div>
-<div>
-<button onclick="toggleFiscalMan()" class="w-full flex justify-between p-4 bg-slate-100 rounded-xl border font-bold uppercase text-[10px]">Option Fiscal <span id="fiscArrow">➕</span></button>
-<div id="fiscContent" class="collapsible-content">
-<div class="mt-2 p-4 bg-blue-50 rounded-xl border border-blue-200 space-y-4 shadow-inner">
-<div class="flex items-center gap-2"><input type="checkbox" id="activeFiscal" class="w-4 h-4"><label for="activeFiscal" class="text-[10px] text-blue-900 uppercase">Activer régime dérogatoire</label></div>
-<select id="typeFisc" class="w-full border p-2 rounded text-sm mb-3 font-bold"><option value="lineaire">Linéaire</option><option value="degressif" selected>Dégressif</option></select>
-<div class="flex justify-between items-center font-bold"><span>Durée Fiscale :</span><input type="number" id="dureeFisc" value="5" class="w-16 border p-1 rounded text-center"></div>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<!-- Onglet 3 : Cession -->
-<section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-4 font-bold">
-<div class="flex items-center gap-3 mb-6 border-b pb-4 text-red-700">
-<span class="bg-red-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold text-sm">3</span>
-<h2 class="text-xl font-bold uppercase tracking-tight">Cession</h2>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-<div><label class="text-[10px] uppercase text-slate-400">Date de cession</label><input type="date" id="dateCession" class="w-full border-2 p-3 rounded-xl text-sm"></div>
-<div><label class="text-[10px] uppercase text-slate-400">Prix de cession (HT)</label><input type="number" id="prixCession" class="w-full border-2 p-3 rounded-xl text-xl font-black text-slate-800 bg-slate-50"></div>
-</div>
-</section>
-
-<!-- Base & Bouton calcul -->
-<div class="bg-slate-900 text-white p-6 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4 sticky bottom-4 z-50 border-t-4 border-emerald-500">
-<div><span class="text-slate-500 text-[10px] uppercase font-bold">Base Amort. Eco</span><div id="resultatBase" class="text-3xl font-black text-emerald-400 tracking-tighter font-numeric">0,00 €</div></div>
-<button id="btnCalculer" class="bg-emerald-600 hover:bg-emerald-500 text-white px-16 py-5 rounded-xl font-black uppercase text-xl shadow-lg transition-transform active:scale-95">Calculer</button>
-</div>
-
-<!-- Tableau -->
-<div id="zoneTableau" class="mt-12 hidden space-y-12">
-<div>
-<h3 class="text-2xl font-black text-slate-800 mb-4 border-l-8 border-emerald-500 pl-4 uppercase">Plan d'amortissement</h3>
-<div class="overflow-x-auto rounded-xl border-2 border-slate-800 bg-white shadow-xl"><table id="tableNormal" class="w-full text-left border-collapse font-bold font-numeric"></table></div>
-</div>
-</div>
-
-<script src="script.js"></script>
-</div>
+<script src="js/config.js"></script>
+<script src="js/amortissement-utils.js"></script>
+<script src="js/moteur-amortissement.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
