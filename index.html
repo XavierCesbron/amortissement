@@ -2,109 +2,195 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Test Amortissement – Base saine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expert-Amort PRO</title>
+<script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f3f4f6;
-    padding: 30px;
-}
-
-h1 {
-    margin-bottom: 20px;
-}
-
-section {
-    background: white;
-    padding: 20px;
-    max-width: 600px;
-    border-radius: 6px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-}
-
-label {
-    display: block;
-    margin-top: 15px;
-    font-weight: bold;
-}
-
-input, select, button {
-    width: 100%;
-    padding: 8px;
-    margin-top: 6px;
-    font-size: 14px;
-}
-
-button {
-    background: #2563eb;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-button:hover {
-    background: #1d4ed8;
-}
-
-pre {
-    margin-top: 20px;
-    background: #111;
-    color: #0f0;
-    padding: 15px;
-    font-size: 14px;
-}
+    .collapsible-content { max-height: 0; overflow: hidden; transition: max-height .5s ease; }
+    .collapsible-content.active { max-height: 2000px; }
 </style>
 </head>
 
-<body>
+<body class="bg-slate-50 p-6 font-sans text-slate-800">
 
-<h1>Simulateur d’amortissement – Test</h1>
+<div class="max-w-6xl mx-auto space-y-6">
 
-<section>
-  <label>Base amortissable</label>
-  <input id="base" type="number" value="10000">
+<header class="text-center border-b pb-6">
+    <h1 class="text-4xl font-black">Expert-Amort <span class="text-emerald-600">PRO</span></h1>
+    <p class="text-sm uppercase text-slate-500">Moteur d’amortissement professionnel</p>
+</header>
 
-  <label>Durée (années)</label>
-  <input id="duree" type="number" value="5">
+<!-- PARAMÈTRES -->
+<section class="bg-white p-6 rounded-xl shadow">
+    <h2 class="text-xl font-bold mb-4">1. Investissement</h2>
 
-  <label>Mode</label>
-  <select id="mode">
-    <option value="lineaire">Linéaire</option>
-    <option value="degressif">Dégressif</option>
-  </select>
+    <div class="grid md:grid-cols-2 gap-4">
+        <div>
+            <label>Date d’acquisition</label>
+            <input type="date" id="dateAcq" class="w-full border p-2 rounded">
+        </div>
+        <div>
+            <label>Date de mise en service</label>
+            <input type="date" id="dateService" class="w-full border p-2 rounded">
+        </div>
+        <div>
+            <label>Base HT</label>
+            <input type="number" id="montantHT" class="w-full border p-2 rounded">
+        </div>
+        <div>
+            <label>Valeur résiduelle</label>
+            <input type="number" id="valeurResiduelle" value="0" class="w-full border p-2 rounded">
+        </div>
 
-  <button onclick="calculer()">Calculer</button>
+        <div>
+            <label>Date ouverture exercice</label>
+            <input type="date" id="bilanDebut" class="w-full border p-2 rounded">
+        </div>
+        <div>
+            <label>Date clôture exercice</label>
+            <input type="date" id="bilanFin" class="w-full border p-2 rounded">
+        </div>
 
-  <pre id="resultat"></pre>
+        <div>
+            <label>Date de cession</label>
+            <input type="date" id="dateCession" class="w-full border p-2 rounded">
+        </div>
+
+        <div class="flex items-center gap-2">
+            <input type="checkbox" id="isVehicule">
+            <label>Véhicule de tourisme (TVA +20%)</label>
+        </div>
+    </div>
 </section>
 
+<section class="bg-white p-6 rounded-xl shadow mt-6">
+    <h2 class="text-xl font-bold mb-4">2. Méthodes</h2>
+
+    <div class="grid md:grid-cols-2 gap-6">
+        <div>
+            <label>Durée économique</label>
+            <input type="number" id="dureeEco" value="5" class="w-full border p-2 rounded">
+        </div>
+
+        <div>
+            <label>Régime fiscal</label>
+            <select id="typeFisc" class="w-full border p-2 rounded">
+                <option value="lineaire">Linéaire</option>
+                <option value="degressif">Dégressif</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Durée fiscale</label>
+            <input type="number" id="dureeFisc" value="5" class="w-full border p-2 rounded">
+        </div>
+
+        <div class="flex items-center gap-2">
+            <input type="checkbox" id="activeFiscal" checked>
+            <label>Activer régime fiscal</label>
+        </div>
+    </div>
+</section>
+
+<div class="text-center mt-6">
+    <button onclick="genererTableau()"
+        class="bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-4 rounded-xl text-xl font-bold">
+        Calculer
+    </button>
+</div>
+
+<div id="zoneTableau" class="mt-10 hidden">
+    <h2 class="text-xl font-bold mb-4">Plan d’amortissement</h2>
+    <table id="tableNormal" class="w-full border text-sm"></table>
+</div>
+
 <script>
-function calculer() {
-    const base = Number(document.getElementById("base").value);
-    const duree = Number(document.getElementById("duree").value);
-    const mode = document.getElementById("mode").value;
+/* ===== UTILITAIRES ===== */
+const € = v => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(v);
+const get = id => document.getElementById(id).value;
 
-    let txt = "MODE : " + mode + "\\n";
+function daysBetween(a,b){return Math.floor((b-a)/86400000)+1;}
 
-    if (mode === "lineaire") {
-        let annuite = base / duree;
-        for (let i = 1; i <= duree; i++) {
-            txt += "Année " + i + " : " + annuite.toFixed(2) + " €\\n";
+/* ===== MOTEUR PRINCIPAL ===== */
+function genererTableau() {
+
+    const baseHT = +get("montantHT");
+    const vr = +get("valeurResiduelle");
+    const baseEco = (document.getElementById("isVehicule").checked ? baseHT*1.2 : baseHT) - vr;
+    const baseFisc = (document.getElementById("isVehicule").checked ? baseHT*1.2 : baseHT);
+
+    const dServ = new Date(get("dateService"));
+    const dDeb = new Date(get("bilanDebut"));
+    const dFin = new Date(get("bilanFin"));
+    const dCess = get("dateCession") ? new Date(get("dateCession")) : null;
+
+    const dureeEco = +get("dureeEco");
+    const dureeFisc = +get("dureeFisc");
+    const typeFisc = get("typeFisc");
+
+    let cumulEco = 0, cumulFisc = 0;
+    let lignes = [];
+
+    for (let i = 0; i < 40; i++) {
+
+        let debut = new Date(dDeb); debut.setFullYear(dDeb.getFullYear() + i);
+        let fin = new Date(dFin); fin.setFullYear(dFin.getFullYear() + i);
+        if (dCess && debut > dCess) break;
+
+        /* ÉCO */
+        let debEco = i === 0 ? dServ : debut;
+        let finEco = dCess && dCess < fin ? dCess : fin;
+        let dotEco = ((baseEco / dureeEco) * (daysBetween(debEco, finEco) / 365));
+        dotEco = Math.min(dotEco, baseEco - cumulEco);
+
+        /* FISCAL */
+        let dotFisc = 0;
+        if (typeFisc === "lineaire") {
+            let deb = i === 0 ? dServ : debut;
+            let finx = dCess && dCess < fin ? dCess : fin;
+            dotFisc = (baseFisc / dureeFisc) * (daysBetween(deb, finx) / 365);
+        } else {
+            let coef = dureeFisc <= 4 ? 1.25 : (dureeFisc <= 6 ? 1.75 : 2.25);
+            let baseRestante = baseFisc - cumulFisc;
+            let mois = 12;
+            if (i === 0) mois = 12 - dServ.getMonth();
+            if (dCess) mois = dCess.getMonth();
+            dotFisc = baseRestante * (coef / dureeFisc) * (mois / 12);
         }
-    } else {
-        let taux = (1 / duree) * 1.75;
-        let vnc = base;
 
-        for (let i = 1; i <= duree; i++) {
-            let dot = vnc * taux;
-            vnc -= dot;
-            txt += "Année " + i + " : " + dot.toFixed(2) + " € | VNC " + vnc.toFixed(2) + "\\n";
-        }
+        dotFisc = Math.min(dotFisc, baseFisc - cumulFisc);
+
+        cumulEco += dotEco;
+        cumulFisc += dotFisc;
+
+        lignes.push({
+            annee: debut.getFullYear(),
+            eco: dotEco,
+            fisc: dotFisc,
+            der: dotFisc - dotEco,
+            vnc: baseEco - cumulEco
+        });
+
+        if (cumulEco >= baseEco) break;
     }
 
-    document.getElementById("resultat").textContent = txt;
+    let html = `<thead class="bg-slate-800 text-white">
+    <tr><th>Année</th><th>Dot. éco</th><th>Dot. fisc</th><th>Diff.</th><th>VNC</th></tr>
+    </thead><tbody>`;
+
+    lignes.forEach(l => {
+        html += `<tr>
+            <td>${l.annee}</td>
+            <td>${€(l.eco)}</td>
+            <td>${€(l.fisc)}</td>
+            <td>${€(l.der)}</td>
+            <td>${€(l.vnc)}</td>
+        </tr>`;
+    });
+
+    document.getElementById("tableNormal").innerHTML = html + "</tbody>";
+    document.getElementById("zoneTableau").classList.remove("hidden");
 }
 </script>
 
